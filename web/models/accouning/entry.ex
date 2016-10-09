@@ -4,9 +4,9 @@ defmodule Kakebosan.Accouning.Entry do
   schema "accounting_entries" do
     field :amount, :integer
     belongs_to :user, Kakebosan.User
-    belongs_to :transaction, Kakebosan.Transaction
-    belongs_to :side, Kakebosan.Side
-    belongs_to :item, Kakebosan.Item
+    belongs_to :transaction, Kakebosan.Accounting.Transaction
+    belongs_to :side, Kakebosan.Accounting.Side
+    belongs_to :item, Kakebosan.Accounting.Item
 
     timestamps()
   end

@@ -4,7 +4,7 @@ defmodule Kakebosan.Accouning.Type do
   schema "accounting_types" do
     field :name, :string
     field :deleted_at, Ecto.DateTime
-    belongs_to :side, Kakebosan.Side
+    belongs_to :side, Kakebosan.Accounting.Side
 
     timestamps()
   end

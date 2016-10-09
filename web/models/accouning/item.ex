@@ -6,7 +6,7 @@ defmodule Kakebosan.Accouning.Item do
     field :description, :string
     field :selectable, :boolean, default: false
     belongs_to :user, Kakebosan.User
-    belongs_to :type, Kakebosan.Type
+    belongs_to :type, Kakebosan.Accounting.Type
 
     timestamps()
   end
