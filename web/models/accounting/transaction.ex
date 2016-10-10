@@ -1,4 +1,4 @@
-defmodule Kakebosan.Accouning.Transaction do
+defmodule Kakebosan.Accounting.Transaction do
   use Kakebosan.Web, :model
 
   schema "accounting_transactions" do

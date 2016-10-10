@@ -19,8 +19,10 @@ defmodule Kakebosan.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", Kakebosan do
-  #   pipe_through :api
-  # end
+  scope "/auth", Kakebosan do
+    pipe_through :browser
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+    post "/identity/callback", AuthController, :identity_callback # todo 開発時のみに制限する
+  end
 end

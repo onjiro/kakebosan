@@ -19,7 +19,8 @@ defmodule Kakebosan.Mixfile do
   def application do
     [mod: {Kakebosan, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex]]
+                    :phoenix_ecto, :postgrex,
+                    :ueberauth, :ueberauth_identity, :ueberauth_github, :ueberauth_twitter]]
   end
 
   # Specifies which paths to compile per environment.
@@ -37,7 +38,13 @@ defmodule Kakebosan.Mixfile do
      {:phoenix_html, "~> 2.6"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
-     {:cowboy, "~> 1.0"}]
+     {:cowboy, "~> 1.0"},
+     {:ueberauth, "~> 0.2"},
+     {:ueberauth_identity, "~> 0.2"},
+     {:ueberauth_github, "~> 0.2"},
+     {:ueberauth_twitter, "~> 0.2"},
+     {:oauth, github: "tim/erlang-oauth"}, # required by ueberauth_twitter
+    ]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

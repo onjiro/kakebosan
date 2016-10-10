@@ -1,9 +1,10 @@
-defmodule Kakebosan.Accouning.Side do
+defmodule Kakebosan.Accounting.Type do
   use Kakebosan.Web, :model
 
-  schema "accounting_sides" do
+  schema "accounting_types" do
     field :name, :string
     field :deleted_at, Ecto.DateTime
+    belongs_to :side, Kakebosan.Accounting.Side
 
     timestamps()
   end

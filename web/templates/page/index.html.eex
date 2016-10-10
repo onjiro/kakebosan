@@ -1,36 +1,29 @@
-<div class="jumbotron">
-  <h2><%= gettext "Welcome to %{name}", name: "Phoenix!" %></h2>
-  <p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
-</div>
+<div class="container-fluid">
+  <div class="row">
+    <section class="jumbotron" id="hello">
+      <h1>家計簿さん</h1>
+      <p>複式簿記で家計簿を！</p>
+      <h3 class="small">複式簿記なら...</h3>
+      <p class="small" style="font-size: 0.82em">
+        現金や電子マネー、クレジットカードなどの支払いと残高をまとめて管理できます。
+      </p>
 
-<div class="row marketing">
-  <div class="col-lg-6">
-    <h4>Resources</h4>
-    <ul>
-      <li>
-        <a href="http://phoenixframework.org/docs/overview">Guides</a>
-      </li>
-      <li>
-        <a href="https://hexdocs.pm/phoenix">Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="col-lg-6">
-    <h4>Help</h4>
-    <ul>
-      <li>
-        <a href="http://groups.google.com/group/phoenix-talk">Mailing list</a>
-      </li>
-      <li>
-        <a href="http://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">@elixirphoenix</a>
-      </li>
-    </ul>
+      <p>
+        <span class="glyphicon glyphicon-signin">
+          <a href="/auth/identity" class="btn btn-primary" >開発者としてログイン</a>
+          <a href="/auth/twitter" class="btn btn-primary" >Twitterでログイン</a>
+          <a href="/auth/github" class="btn btn-primary" >GitHubでログイン</a>
+        </span>
+      </p>
+    </section>
   </div>
 </div>
+
+<footer class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12">
+      <span class="pull-right">&copy; <a href="https://twitter.com/onjiro_mohyahya" target="_blank">@onjiro_mohyahya</a> 2016</span>
+    </div>
+  </div>
+</footer>
+<br>
