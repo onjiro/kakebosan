@@ -1,14 +1,1 @@
-<div class="container-fluid">
-  <div class="row">
-    ログイン
-  </div>
-</div>
-
-<footer class="container-fluid">
-  <div class="row">
-    <div class="col-xs-12">
-      <span class="pull-right">&copy; <a href="https://twitter.com/onjiro_mohyahya" target="_blank">@onjiro_mohyahya</a> 2016</span>
-    </div>
-  </div>
-</footer>
-<br>
+<script src="<%= static_path(@conn, "/js/app.js") %>"></script>

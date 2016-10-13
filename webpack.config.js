@@ -3,23 +3,24 @@ var CopyWebpackPlugin = require("copy-webpack-plugin");
 module.exports = {
   devtool: "source-map",
   entry: {
-    app: ["./web/static/css/app.scss", "./web/static/js/app.js"]
+    app: ["./web/static/css/app.scss", "./web/static/js/app.jsx"]
   },
   output: {
     path: "./priv/static",
     filename: "js/app.js"
   },
   resolve: {
-    modulesDirectories: [ "node_modules", __dirname + "/web/static/js" ]
+    modulesDirectories: [ "node_modules", __dirname + "/web/static/js" ],
+    extensions: ["", ".js", ".jsx"]
   },
   module: {
     loaders: [{
-      test: /\.js$/,
+      test: /\.jsx?$/,
       exclude: /node_modules/,
       loader: ["babel"],
       include: __dirname,
       query: {
-        presets: ["es2015"]
+        presets: ["react", "es2015"]
       }
     }, {
       test: /\.css$/,
