@@ -13,6 +13,14 @@ defmodule Kakebosan.AuthController do
     render(conn, "request.html", callback_url: Helpers.callback_url(conn))
   end
 
+  # ログアウトする
+  def logout(conn, _params) do
+    conn
+    |> put_flash(:info, "ログアウトしました")
+    |> put_session(:current_user, nil)
+    |> redirect(to: @page_login_success)
+  end
+
   # 通常の oauth 認証
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, params) do
     Kakebosan.Repo.transaction fn() ->
