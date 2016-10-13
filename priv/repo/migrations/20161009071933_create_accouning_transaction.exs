@@ -9,7 +9,7 @@ defmodule Kakebosan.Repo.Migrations.CreateAccouning.Transaction do
 
       timestamps()
     end
-    create index(:accounting_transactions, [:user])
+    create index(:accounting_transactions, [:user_id])
     create index(:accounting_transactions, [:date])
 
   end
