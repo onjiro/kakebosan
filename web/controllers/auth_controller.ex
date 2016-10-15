@@ -1,7 +1,6 @@
 defmodule Kakebosan.AuthController do
   use Kakebosan.Web, :controller
   alias Kakebosan.User
-  alias Ueberauth.Auth
   alias Ueberauth.Strategy.Helpers
   plug Ueberauth
 
@@ -22,7 +21,7 @@ defmodule Kakebosan.AuthController do
   end
 
   # 通常の oauth 認証
-  def callback(%{assigns: %{ueberauth_auth: auth}} = conn, params) do
+  def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     Kakebosan.Repo.transaction fn() ->
       case get_or_create_user(auth) do
         %{ id: _ } = user ->
@@ -39,7 +38,7 @@ defmodule Kakebosan.AuthController do
   end
 
   # ユーザーID、パスワード方式の認証
-  def identity_callback(%{assigns: %{ueberauth_auth: auth}} = conn, params) do
+  def identity_callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     Kakebosan.Repo.transaction fn() ->
       case validate_pass(auth.credentials) do
         :ok ->

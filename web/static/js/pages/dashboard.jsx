@@ -4,7 +4,7 @@ import RecentHistory from "components/recent-history";
 import EntryModal from "components/entry-modal";
 import Notice from "components/notice";
 import moment from "moment";
-import $ from "jquery";
+import axios from "axios";
 
 export default React.createClass({
   getInitialState() {
@@ -21,12 +21,12 @@ export default React.createClass({
     this.loadHistories(dateFrom, dateTo);
   },
   loadHistories(dateFrom, dateTo) {
-    $.when(
-      $.ajax(`api/transactions`, { dataType: 'json', data: {
+    Promise.all(
+      axios.get(`api/transactions`, { data: {
         dateFrom: dateFrom,
         dateTo:   dateTo
       } }),
-      $.ajax(`api/items`       , { dataType: 'json' })
+      axios.get(`api/items`)
     ).then((trxRes, itemsRes) => {
       var currentTransactions = this.state.transactions;
       this.setState({
@@ -34,20 +34,18 @@ export default React.createClass({
         transactions:        currentTransactions.concat(trxRes[0].data),
         items:               itemsRes[0].data
       });
-    }).fail((err) => {
+    }).catch((err) => {
       console.log(err);
       this.error("エラーが発生しました。");
     });
   },
   deleteTransaction(transaction) {
-    $.ajax(`${this.props.url}/transactions/${transaction.id}`, {
-      method: 'DELETE'
-    }).then((data) => {
+    axios.delete(`${this.props.url}/transactions/${transaction.id}`).then((data) => {
       this.setState({
         transactions: _(this.state.transactions).reject((one) => one.id === transaction.id)
       });
       this.info("登録を削除しました。");
-    }).fail((err) => {
+    }).catch((err) => {
       console.log(err);
       this.error("エラーが発生しました。");
     });
