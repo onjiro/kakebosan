@@ -39,7 +39,7 @@ export default React.createClass({
           </table>
           <div className="col-xs-12">
             <a className="btn btn-lg btn-default btn-block" href="#" onClick={this.loadFollowingHistories}>
-              <span className="glyphicon glyphicon-download"></span>続き({this.toBeLoadedRange()})
+              <span className="glyphicon glyphicon-download"></span> 続き({this.toBeLoadedRange()})
             </a>
           </div>
         </section>
