@@ -1,7 +1,7 @@
-defmodule Kakebosan.Accouning.ItemTest do
+defmodule Kakebosan.Accounting.ItemTest do
   use Kakebosan.ModelCase
 
-  alias Kakebosan.Accouning.Item
+  alias Kakebosan.Accounting.Item
 
   @valid_attrs %{description: "some content", name: "some content", selectable: true}
   @invalid_attrs %{}

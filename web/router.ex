@@ -12,6 +12,7 @@ defmodule Kakebosan.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
     plug :assign_current_user
   end
 
@@ -27,6 +28,11 @@ defmodule Kakebosan.Router do
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback
     post "/identity/callback", AuthController, :identity_callback # todo 開発時のみに制限する
+  end
+
+  scope "/api", Kakebosan do
+    pipe_through :api
+    resources "/items", Accounting.ItemController
   end
 
   # Fetch the current user from the session and add it to `conn.assigns`. This

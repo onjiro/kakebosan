@@ -1,7 +1,7 @@
-defmodule Kakebosan.Accouning.TypeTest do
+defmodule Kakebosan.Accounting.TypeTest do
   use Kakebosan.ModelCase
 
-  alias Kakebosan.Accouning.Type
+  alias Kakebosan.Accounting.Type
 
   @valid_attrs %{deleted_at: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010}, name: "some content"}
   @invalid_attrs %{}
