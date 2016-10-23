@@ -2,6 +2,8 @@ defmodule Kakebosan.Accounting.ItemController do
   use Kakebosan.Web, :controller
 
   alias Kakebosan.Accounting.Item
+  plug :load_and_authorize_resource, model: Item
+  plug :scrub_params, "accounting_item" when action in [:create, :update]
 
   def index(conn, _params) do
     user = get_session(conn, :current_user)
@@ -30,12 +32,11 @@ defmodule Kakebosan.Accounting.ItemController do
   end
 
   def show(conn, %{"id" => id}) do
-    item = Repo.get!(Item, id)
-    render(conn, "show.json", item: item)
+    render(conn, "show.json", item: conn.assigns.item)
   end
 
   def update(conn, %{"id" => id, "item" => item_params}) do
-    item = Repo.get!(Item, id)
+    item = conn.assigns.item
     changeset = Item.changeset(item, item_params)
 
     case Repo.update(changeset) do
@@ -49,12 +50,7 @@ defmodule Kakebosan.Accounting.ItemController do
   end
 
   def delete(conn, %{"id" => id}) do
-    item = Repo.get!(Item, id)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    Repo.delete!(item)
-
+    Repo.delete!(conn.assigns.item)
     send_resp(conn, :no_content, "")
   end
 end

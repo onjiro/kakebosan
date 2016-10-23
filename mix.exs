@@ -44,6 +44,7 @@ defmodule Kakebosan.Mixfile do
      {:ueberauth_github, "~> 0.2"},
      {:ueberauth_twitter, "~> 0.2"},
      {:oauth, github: "tim/erlang-oauth"}, # required by ueberauth_twitter
+     {:canary, "~> 1.0.0"},
     ]
   end
 

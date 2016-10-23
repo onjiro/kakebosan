@@ -45,3 +45,6 @@ client_secret: System.get_env("GITHUB_CLIENT_SECRET")
 config :ueberauth, Ueberauth.Strategy.Twitter.OAuth,
 consumer_key: System.get_env("TWITTER_CONSUMER_KEY"),
 consumer_secret: System.get_env("TWITTER_CONSUMER_SECRET")
+
+# canary setting
+config :canary, repo: Kakebosan.Repo

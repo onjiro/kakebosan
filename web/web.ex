@@ -36,6 +36,7 @@ defmodule Kakebosan.Web do
 
       import Kakebosan.Router.Helpers
       import Kakebosan.Gettext
+      import Canary.Plugs
     end
   end
 
