@@ -1,10 +1,13 @@
 import React from "react";
+import moment from "moment";
+import _ from "lodash";
+
 export default React.createClass({
   debits() {
-    return _(this.props.data.entries || []).select((e) => e.side_id == 1);
+    return _(this.props.data.entries || []).filter((e) => e.side_id == 1);
   },
   credits() {
-    return _(this.props.data.entries || []).select((e) => e.side_id == 2);
+    return _(this.props.data.entries || []).filter((e) => e.side_id == 2);
   },
   debitItems() {
     return this.debits(this.props.data).reduce((memo, e) => memo + e.item.name, '');
@@ -16,7 +19,7 @@ export default React.createClass({
     return this.debits(this.props.data).reduce((memo, e) => memo + e.amount, 0);
   },
   creditSum() {
-    return this.credits(this.props.data).reduce((memo, e) => memo + e.amount, 0);
+    return this.credits(this.props.data).reduce((memo, e) => {console.log(memo, e); return memo + e.amount}, 0);
   },
   delete(e) {
     if (window.confirm("本当に削除してよろしいですか？")) {

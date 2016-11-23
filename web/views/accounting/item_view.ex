@@ -1,8 +1,8 @@
 defmodule Kakebosan.Accounting.ItemView do
   use Kakebosan.Web, :view
 
-  def render("index.json", %{accounting_items: accounting_items}) do
-    %{data: render_many(accounting_items, Kakebosan.Accounting.ItemView, "item.json")}
+  def render("index.json", %{items: items}) do
+    %{data: render_many(items, Kakebosan.Accounting.ItemView, "item.json")}
   end
 
   def render("show.json", %{item: item}) do

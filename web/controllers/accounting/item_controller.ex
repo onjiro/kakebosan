@@ -7,12 +7,12 @@ defmodule Kakebosan.Accounting.ItemController do
 
   def index(conn, _params) do
     user = get_session(conn, :current_user)
-    accounting_items = Repo.all(
+    items = Repo.all(
       from i in Item,
       where: i.user_id == ^user.id,
       order_by: [i.id]
     )
-    render(conn, "index.json", accounting_items: accounting_items)
+    render(conn, "index.json", items: items)
   end
 
   def create(conn, %{"item" => item_params}) do

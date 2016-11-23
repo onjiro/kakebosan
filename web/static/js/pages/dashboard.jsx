@@ -21,22 +21,23 @@ export default React.createClass({
     this.loadHistories(dateFrom, dateTo);
   },
   loadHistories(dateFrom, dateTo) {
-    Promise.all(
+    Promise.all([
       axios.get(`api/transactions`, { data: {
         dateFrom: dateFrom,
         dateTo:   dateTo
       } }),
       axios.get(`api/items`)
-    ).then((trxRes, itemsRes) => {
+    ]).then((res) => {
+      var [transactionResponse, itemsResponse] = res;
       var currentTransactions = this.state.transactions;
       this.setState({
         transactionDateFrom: dateFrom,
-        transactions:        currentTransactions.concat(trxRes[0].data),
-        items:               itemsRes[0].data
+        transactions:        currentTransactions.concat(res[0].data.data),
+        items:               res[1].data
       });
     }).catch((err) => {
-      console.log(err);
       this.error("エラーが発生しました。");
+      throw err;
     });
   },
   deleteTransaction(transaction) {

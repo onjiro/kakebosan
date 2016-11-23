@@ -5,6 +5,7 @@ defmodule Kakebosan.Accounting.Transaction do
     field :date, Ecto.DateTime
     field :description, :string
     belongs_to :user, Kakebosan.User
+    has_many :entries, Kakebosan.Accounting.Entry
 
     timestamps()
   end
