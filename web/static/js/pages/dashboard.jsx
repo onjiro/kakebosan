@@ -5,11 +5,12 @@ import EntryModal from "components/entry-modal";
 import Notice from "components/notice";
 import moment from "moment";
 import axios from "axios";
+import _ from "lodash";
 
 export default React.createClass({
   getInitialState() {
     return {
-      currentEntry: null,
+      currentTransaction: null,
       transactionDateFrom: null,
       transactionDateTo: null,
       transactions: []
@@ -32,8 +33,8 @@ export default React.createClass({
       var currentTransactions = this.state.transactions;
       this.setState({
         transactionDateFrom: dateFrom,
-        transactions:        currentTransactions.concat(res[0].data.data),
-        items:               res[1].data
+        transactions: currentTransactions.concat(res[0].data.data),
+        items: res[1].data.data
       });
     }).catch((err) => {
       this.error("エラーが発生しました。");
@@ -58,10 +59,10 @@ export default React.createClass({
   },
   startNewEntry() {
     this.setState({
-      currentEntry: {
-        date: new Date(),
-        debits:  [],
-        credits: []
+      currentTransaction: {
+        date: new Date().toISOString().substring(0, 10),
+        entries: [],
+        description: ""
       }
     });
   },
@@ -70,8 +71,12 @@ export default React.createClass({
     this.setState({ transactions: [data.data].concat(this.state.transactions) });
     this.info("登録しました。");
   },
+  openEntryModal(transaction) {
+    //this.setState({ currentTransaction: _.cloneDeep(transaction) });
+    this.refs["entryModal"].open(transaction);
+  },
   closeEntryModal() {
-    this.setState({ currentEntry: null });
+    this.setState({ currentTransaction: null });
   },
   info(text) {
     this.setState({ notice: {type: "info", text: text} });
@@ -91,12 +96,14 @@ export default React.createClass({
         <RecentHistory data={this.state.transactions}
                        dateFrom={this.state.transactionDateFrom}
                        loadFollowingHistories={this.loadFollowingHistories}
+                       openEditModal={this.openEntryModal}
                        deleteTransaction={this.deleteTransaction}/>
 
-        <EntryModal title="登録" url="api/transactions"
+        <EntryModal ref="entryModal"
+                    title="登録" url="api/transactions"
                     items={this.state.items}
-                    editTarget={this.state.currentEntry}
-                    show={this.state.currentEntry}
+                    editTarget={this.state.currentTransaction}
+                    show={this.state.currentTransaction}
                     onSave={this.handleSave}
                     onCancel={this.closeEntryModal} />
       </div>

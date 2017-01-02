@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "components/modal";
-import InputItemAndAmount from "components/input-item-and-amount";
+import InputItemAndAmount from "components/entryModal/input-item-and-amount";
 
 export default React.createClass({
   getInitialState() {

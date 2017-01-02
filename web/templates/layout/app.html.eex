@@ -7,8 +7,9 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>家計簿さん</title>
-        <link rel="stylesheet" href="<%= static_path(@conn, "/css/bootstrap.min.css") %>">
-        <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+        <link rel="stylesheet" href="<%= static_path(@conn, ~s(/css/bootstrap.min.css)) %>">
+        <link rel="stylesheet" href="<%= static_path(@conn, ~s(/css/react-select.min.css)) %>">
+        <link rel="stylesheet" href="<%= static_path(@conn, ~s(/css/app.css)) %>">
     </head>
 
     <body>

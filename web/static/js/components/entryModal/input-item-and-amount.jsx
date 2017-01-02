@@ -1,4 +1,6 @@
 import React from "react";
+import ReactDOM from "react-dom";
+import Select from "react-select";
 
 export default React.createClass({
   handleItemChange(selected) {
@@ -12,11 +14,11 @@ export default React.createClass({
     this.props.onChange({
       id: this.props.data.id,
       item_id: this.props.data.item_id,
-      amount: ReactDOM.findDOMNode(this.refs.amount).value
+      amount: Number(ReactDOM.findDOMNode(this.refs.amount).value)
     });
   },
-  typeLabel(type) {
-    switch (type) {
+  typeLabel(item) {
+    switch (item.type_id) {
       case 1: return "資産";
       case 2: return "費用";
       case 3: return "負債";
@@ -27,7 +29,7 @@ export default React.createClass({
   },
   render() {
     var options = this.props.items.map((item) => new Object({
-      label: `${this.typeLabel(item.type_id)}:${item.name}`,
+      label: `${this.typeLabel(item)}:${item.name}`,
       value: item.id
     }));
     return (

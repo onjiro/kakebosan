@@ -33,6 +33,7 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin("css/app.css"),
     new CopyWebpackPlugin([{ from: "./web/static/assets" }]),
-    new CopyWebpackPlugin([{ from: "./node_modules/bootstrap/dist" }])
+    new CopyWebpackPlugin([{ from: "./node_modules/bootstrap/dist" }]),
+    new CopyWebpackPlugin([{ from: "./node_modules/react-select/dist", to: "css/" }])
   ]
 };

@@ -15,6 +15,7 @@ export default React.createClass({
   render() {
     var list = this.props.data.map((transaction) => (
       <RecentHistoryRow key={transaction.id} data={transaction}
+                        openEditModal={this.props.openEditModal}
                         deleteTransaction={this.props.deleteTransaction}/>
     ));
 

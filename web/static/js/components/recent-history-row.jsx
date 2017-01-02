@@ -19,22 +19,19 @@ export default React.createClass({
     return this.debits(this.props.data).reduce((memo, e) => memo + e.amount, 0);
   },
   creditSum() {
-    return this.credits(this.props.data).reduce((memo, e) => {console.log(memo, e); return memo + e.amount}, 0);
+    return this.credits(this.props.data).reduce((memo, e) => memo + e.amount, 0);
   },
-  delete(e) {
-    if (window.confirm("本当に削除してよろしいですか？")) {
-      this.props.deleteTransaction(this.props.data);
-    }
+  showDetails() {
+    this.props.openEditModal(this.props.data);
   },
   render() {
     return (
-      <tr>
+      <tr onClick={this.showDetails}>
         <td>{moment(this.props.data.date).format('YYYY-MM-DD')}</td>
         <td>{this.debitItems(this.props.data)}</td>
         <td className="hidden-xs">&yen;{this.debitSum(this.props.data)}</td>
         <td>{this.creditItems(this.props.data)}</td>
         <td>&yen;{this.creditSum(this.props.data)}</td>
-        <td><button type="button" className="delete-row pull-right" onClick={this.delete}>x</button></td>
       </tr>
     );
   }

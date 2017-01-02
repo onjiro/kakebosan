@@ -11,6 +11,9 @@ defmodule Kakebosan.Accounting.ItemView do
 
   def render("item.json", %{item: item}) do
     %{id: item.id,
-      name: item.name}
+      name: item.name,
+      selectable: item.selectable,
+      type_id: item.type_id,
+      description: item.description}
   end
 end
