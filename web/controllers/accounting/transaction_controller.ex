@@ -2,8 +2,10 @@ defmodule Kakebosan.Accounting.TransactionController do
   use Kakebosan.Web, :controller
 
   alias Kakebosan.Accounting.Transaction
+  alias Kakebosan.Accounting.Entry
+  alias Kakebosan.Accounting.Item
   plug :load_and_authorize_resource, model: Transaction
-  plug :scrub_params, "accounting_transaction" when action in [:create, :update]
+  plug :scrub_params, "transaction" when action in [:create, :update]
 
   def index(conn, _params) do
     user = get_session(conn, :current_user)
@@ -19,14 +21,21 @@ defmodule Kakebosan.Accounting.TransactionController do
   end
 
   def create(conn, %{"transaction" => transaction_params}) do
-    changeset = Transaction.changeset(%Transaction{}, transaction_params)
+    user = get_session(conn, :current_user)
+
+    transaction = Transaction.changeset(%Transaction{}, Map.merge(transaction_params, %{"user_id" => user.id}))
+    entries = for e <- transaction_params["entries"] do
+      item = Repo.get!(Item, e["item"]["id"])
+      Entry.changeset(%Entry{}, Map.merge(e, %{"user_id" => user.id, "item_id" => item.id}))
+    end
+    changeset = Ecto.Changeset.put_assoc(transaction, :entries, entries)
 
     case Repo.insert(changeset) do
       {:ok, transaction} ->
         conn
         |> put_status(:created)
         |> put_resp_header("location", transaction_path(conn, :show, transaction))
-        |> render("show.json", transaction: transaction)
+        |> render("show.json", transaction: Repo.preload(transaction, entries: [:side, :item]))
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)

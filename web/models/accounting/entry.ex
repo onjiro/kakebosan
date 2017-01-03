@@ -16,7 +16,7 @@ defmodule Kakebosan.Accounting.Entry do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:amount])
+    |> cast(params, [:user_id, :amount, :side_id, :item_id, :transaction_id])
     |> validate_required([:amount])
   end
 end

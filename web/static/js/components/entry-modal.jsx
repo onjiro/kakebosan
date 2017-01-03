@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import Modal from "components/modal";
 import InputDate from "components/entryModal/input-date";
@@ -22,25 +23,19 @@ export default React.createClass({
   handleCancel(e) {
     e.preventDefault();
     this.close();
-    this.props.onCancel(e);
   },
   handleSubmit(e) {
     e.preventDefault();
-    $.ajax({
-      url: this.props.url,
-      dataType: "json",
-      method: "POST",
-      data: { transaction: {
-        date: this.state.date.toISOString(),
-        entries: _.select(this.state.debits.concat(this.state.credits), (one) => {
-          return one.item_id && one.amount;
-        })
-      }}
-    }).done((data) => {
-      this.props.onSave(data);
-      this.setState(this.getInitialState());
-    }).fail((xhr, status, err) => {
-      console.error(this.props.url, status, err.toString());
+    // todo validate
+    axios.post(this.props.url, {
+      transaction: {
+        date: new Date(this.state.date).toISOString(),
+        entries: _(this.state.debits.concat(this.state.credits)).filter((one) => one.item && one.item.id && one.amount).value()
+      }
+    }).then((data) => {
+      this.props.onSave(data.data.data);
+    }).catch((xhr, status, err) => {
+      console.error(this.props.url, status, (err || "").toString());
     });
   },
   handleChangeDate() {

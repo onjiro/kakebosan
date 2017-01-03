@@ -58,8 +58,8 @@ export default React.createClass({
     this.loadHistories(dateFrom.toISOString(), dateTo.toISOString());
   },
   handleSave(data) {
-    this.closeEntryModal();
-    this.setState({ transactions: [data.data].concat(this.state.transactions) });
+    this.refs["entryModal"].close();
+    this.setState({ transactions: [data].concat(this.state.transactions) });
     this.info("登録しました。");
   },
   openNewEntryModal() {
@@ -67,9 +67,6 @@ export default React.createClass({
   },
   openEntryModal(transaction) {
     this.refs["entryModal"].open(transaction);
-  },
-  closeEntryModal() {
-    this.setState({ currentTransaction: null });
   },
   info(text) {
     this.setState({ notice: {type: "info", text: text} });
@@ -97,8 +94,7 @@ export default React.createClass({
                     items={this.state.items}
                     editTarget={this.state.currentTransaction}
                     show={this.state.currentTransaction}
-                    onSave={this.handleSave}
-                    onCancel={this.closeEntryModal} />
+                    onSave={this.handleSave} />
       </div>
     );
   }
