@@ -57,22 +57,15 @@ export default React.createClass({
     var dateFrom = dateTo.clone().subtract(1, 'month');
     this.loadHistories(dateFrom.toISOString(), dateTo.toISOString());
   },
-  startNewEntry() {
-    this.setState({
-      currentTransaction: {
-        date: new Date().toISOString().substring(0, 10),
-        entries: [],
-        description: ""
-      }
-    });
-  },
   handleSave(data) {
     this.closeEntryModal();
     this.setState({ transactions: [data.data].concat(this.state.transactions) });
     this.info("登録しました。");
   },
+  openNewEntryModal() {
+    this.refs["entryModal"].open();
+  },
   openEntryModal(transaction) {
-    //this.setState({ currentTransaction: _.cloneDeep(transaction) });
     this.refs["entryModal"].open(transaction);
   },
   closeEntryModal() {
@@ -92,7 +85,7 @@ export default React.createClass({
     return (
       <div>
         {notice}
-        <NewEntryButtonForm onClick={this.startNewEntry}>登録</NewEntryButtonForm>
+        <NewEntryButtonForm onClick={this.openNewEntryModal}>登録</NewEntryButtonForm>
         <RecentHistory data={this.state.transactions}
                        dateFrom={this.state.transactionDateFrom}
                        loadFollowingHistories={this.loadFollowingHistories}
