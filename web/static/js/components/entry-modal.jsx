@@ -6,19 +6,12 @@ import InputItemAndAmount from "components/entryModal/input-item-and-amount";
 export default React.createClass({
   // API
   open(transaction) {
-    transaction = transaction || { date: new Date(), entries: [{id: "debit_0", side_id: 1}, {id: "credit_0", side_id: 2}] };
-    var toViewModel = (one) => {
-      return {
-        id: one.id,
-        item_id: (one.item && one.item.id) || null,
-        amount: one.amount
-      };
-    };
+    transaction = transaction || { date: new Date(), entries: [{id: "debit_0", side_id: 1, amount: 0}, {id: "credit_0", side_id: 2, amount: 0}] };
     this.setState({
       id: transaction.id,
       date: new Date(transaction.date).toISOString().substring(0, 10),
-      debits:  _(transaction.entries).filter((one) => one.side_id === 1).map(toViewModel).value(),
-      credits: _(transaction.entries).filter((one) => one.side_id === 2).map(toViewModel).value(),
+      debits:  _(transaction.entries).filter((one) => one.side_id === 1).cloneDeep(),
+      credits: _(transaction.entries).filter((one) => one.side_id === 2).cloneDeep(),
       show: true
     });
   },

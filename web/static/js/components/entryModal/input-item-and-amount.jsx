@@ -4,18 +4,10 @@ import Select from "react-select";
 
 export default React.createClass({
   handleItemChange(selected) {
-    this.props.onChange({
-      id: this.props.data.id,
-      item_id: selected.value,
-      amount: ReactDOM.findDOMNode(this.refs.amount).value
-    });
+    this.props.onChange(_.extend(this.props.data, { item: { id: selected.value } }));
   },
   handleAmountChange(event) {
-    this.props.onChange({
-      id: this.props.data.id,
-      item_id: this.props.data.item_id,
-      amount: Number(ReactDOM.findDOMNode(this.refs.amount).value)
-    });
+    this.props.onChange(_.extend(this.props.data, { amount: Number(ReactDOM.findDOMNode(this.refs.amount).value) }));
   },
   typeLabel(item) {
     switch (item.type_id) {
@@ -35,7 +27,7 @@ export default React.createClass({
     return (
       <div className="account-line clearfix">
         <Select className="col-xs-8-form" placeholder="科目"
-                options={options} value={this.props.data.item_id}
+                options={options} value={this.props.data.item && this.props.data.item.id || null}
                 onChange={this.handleItemChange} />
         <input className="form-control col-xs-4-form" placeholder="金額"
                type="number" style={{textAlign: "right"}} value={this.props.data.amount}
