@@ -1,6 +1,10 @@
 defmodule Kakebosan.ErrorView do
   use Kakebosan.Web, :view
 
+  def render("404.json", _assigns) do
+    %{error: ""}
+  end
+
   def render("404.html", _assigns) do
     "Page not found"
   end

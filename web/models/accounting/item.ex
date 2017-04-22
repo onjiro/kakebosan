@@ -17,7 +17,7 @@ defmodule Kakebosan.Accounting.Item do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :description, :selectable])
+    |> cast(params, [:name, :description, :selectable, :user_id, :type_id])
     |> validate_required([:name])
   end
 

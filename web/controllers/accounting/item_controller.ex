@@ -3,7 +3,7 @@ defmodule Kakebosan.Accounting.ItemController do
 
   alias Kakebosan.Accounting.Item
   plug :load_and_authorize_resource, model: Item
-  plug :scrub_params, "accounting_item" when action in [:create, :update]
+  plug :scrub_params, "item" when action in [:create, :update]
 
   def index(conn, _params) do
     user = get_session(conn, :current_user)
@@ -31,11 +31,18 @@ defmodule Kakebosan.Accounting.ItemController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    render(conn, "show.json", item: conn.assigns.item)
+  def show(conn, %{"id" => _id}) do
+    case conn.assigns.item do
+      nil ->
+        conn
+        |> put_status(404)
+        |> render(Kakebosan.ErrorView, "404.json")
+      _ ->
+        render(conn, "show.json", item: conn.assigns.item)
+    end
   end
 
-  def update(conn, %{"id" => id, "item" => item_params}) do
+  def update(conn, %{"id" => _id, "item" => item_params}) do
     item = conn.assigns.item
     changeset = Item.changeset(item, item_params)
 
@@ -49,7 +56,7 @@ defmodule Kakebosan.Accounting.ItemController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => _id}) do
     Repo.delete!(conn.assigns.item)
     send_resp(conn, :no_content, "")
   end
