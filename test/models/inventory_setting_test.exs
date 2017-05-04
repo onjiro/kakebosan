@@ -4,7 +4,7 @@ defmodule Kakebosan.InventorySettingTest do
   alias Kakebosan.InventorySetting
 
   @valid_attrs %{}
-  @invalid_attrs %{}
+  @invalid_attrs %{user_id: "hoge"}
 
   test "changeset with valid attributes" do
     changeset = InventorySetting.changeset(%InventorySetting{}, @valid_attrs)

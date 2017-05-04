@@ -14,7 +14,7 @@ defmodule Kakebosan.InventorySetting do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [])
+    |> cast(params, [:user_id, :debit_item_id, :credit_item_id])
     |> validate_required([])
   end
 end
