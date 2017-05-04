@@ -43,11 +43,11 @@ defmodule Kakebosan.Accounting.TransactionController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"id" => _id}) do
     render(conn, "show.json", transaction: conn.assigns.transaction)
   end
 
-  def update(conn, %{"id" => id, "transaction" => transaction_params}) do
+  def update(conn, %{"id" => _id, "transaction" => transaction_params}) do
     transaction = conn.assigns.transaction
     changeset = Transaction.changeset(transaction, transaction_params)
 
@@ -61,7 +61,7 @@ defmodule Kakebosan.Accounting.TransactionController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => _id}) do
     Repo.delete!(conn.assigns.transaction)
     send_resp(conn, :no_content, "")
   end
