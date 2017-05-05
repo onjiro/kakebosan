@@ -4,7 +4,7 @@ defmodule Kakebosan.Accounting.TransactionController do
   alias Kakebosan.Accounting.Transaction
   alias Kakebosan.Accounting.Entry
   alias Kakebosan.Accounting.Item
-  plug :load_and_authorize_resource, model: Transaction
+  plug :load_and_authorize_resource, model: Transaction, preload: [entries: [:item]]
   plug :scrub_params, "transaction" when action in [:create, :update]
 
   def index(conn, _params) do
@@ -24,7 +24,7 @@ defmodule Kakebosan.Accounting.TransactionController do
     user = get_session(conn, :current_user)
 
     transaction = Transaction.changeset(%Transaction{}, Map.merge(transaction_params, %{"user_id" => user.id}))
-    entries = for e <- transaction_params["entries"] do
+    entries = for e <- transaction_params["entries"] || [] do
       item = Repo.get!(Item, e["item"]["id"])
       Entry.changeset(%Entry{}, Map.merge(e, %{"user_id" => user.id, "item_id" => item.id}))
     end
@@ -44,7 +44,14 @@ defmodule Kakebosan.Accounting.TransactionController do
   end
 
   def show(conn, %{"id" => _id}) do
-    render(conn, "show.json", transaction: conn.assigns.transaction)
+    case conn.assigns.transaction do
+      nil ->
+        conn
+        |> put_status(404)
+        |> render(Kakebosan.ErrorView, "404.json")
+      _ ->
+        render(conn, "show.json", transaction: conn.assigns.transaction)
+    end
   end
 
   def update(conn, %{"id" => _id, "transaction" => transaction_params}) do
