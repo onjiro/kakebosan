@@ -75,18 +75,18 @@ defmodule Kakebosan.Accounting.TransactionControllerTest do
     assert json_response(conn, 422)["errors"] != %{}
   end
 
-  # test "updates and renders chosen resource when data is valid", %{conn: conn} do
-  #   transaction = Repo.insert! %Transaction{name: "test", selectable: true, user_id: 1, type_id: 1}
-  #   conn = put conn, transaction_path(conn, :update, transaction), transaction: @valid_attrs
-  #   assert json_response(conn, 200)["data"]["id"]
-  #   assert Repo.get_by(Transaction, @valid_attrs)
-  # end
+  test "updates and renders chosen resource when data is valid", %{conn: conn} do
+    conn = put conn, transaction_path(conn, :update, 1), transaction: @valid_attrs
+    assert json_response(conn, 200)["data"]["id"]
+    transaction = Repo.get_by!(Transaction, %{ date: @valid_attrs[:date] })
+    assert transaction
+    assert Enum.count(Repo.preload(transaction, :entries).entries) == 2
+  end
 
-  # test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-  #   transaction = Repo.insert! %Transaction{name: "test", selectable: true, user_id: 1, type_id: 1}
-  #   conn = put conn, transaction_path(conn, :update, transaction), transaction: @invalid_attrs
-  #   assert json_response(conn, 422)["errors"] != %{}
-  # end
+  test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
+    conn = put conn, transaction_path(conn, :update, 1), transaction: @invalid_attrs
+    assert json_response(conn, 422)["errors"] != %{}
+  end
 
   # test "deletes chosen resource", %{conn: conn} do
   #   transaction = Repo.insert! %Transaction{name: "test", selectable: true, user_id: 1, type_id: 1}

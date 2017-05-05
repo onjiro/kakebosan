@@ -55,12 +55,19 @@ defmodule Kakebosan.Accounting.TransactionController do
   end
 
   def update(conn, %{"id" => _id, "transaction" => transaction_params}) do
-    transaction = conn.assigns.transaction
-    changeset = Transaction.changeset(transaction, transaction_params)
+    user = get_session(conn, :current_user)
+
+    changeset =
+      conn.assigns.transaction
+      |> Transaction.changeset(transaction_params)
+      |> Ecto.Changeset.put_assoc(:entries, for e <- transaction_params["entries"] || [] do
+                                               item = Repo.get!(Item, e["item"]["id"])
+                                               Entry.changeset(%Entry{}, Map.merge(e, %{"user_id" => user.id, "item_id" => item.id}))
+                                             end)
 
     case Repo.update(changeset) do
       {:ok, transaction} ->
-        render(conn, "show.json", transaction: transaction)
+        render(conn, "show.json", transaction: Repo.preload(transaction, entries: [:side, :item]))
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
