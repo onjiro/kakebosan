@@ -88,10 +88,9 @@ defmodule Kakebosan.Accounting.TransactionControllerTest do
     assert json_response(conn, 422)["errors"] != %{}
   end
 
-  # test "deletes chosen resource", %{conn: conn} do
-  #   transaction = Repo.insert! %Transaction{name: "test", selectable: true, user_id: 1, type_id: 1}
-  #   conn = delete conn, transaction_path(conn, :delete, transaction)
-  #   assert response(conn, 204)
-  #   refute Repo.get(Transaction, transaction.id)
-  # end
+  test "deletes chosen resource", %{conn: conn} do
+    conn = delete conn, transaction_path(conn, :delete, 1)
+    assert response(conn, 204)
+    refute Repo.get(Transaction, 1)
+  end
 end
