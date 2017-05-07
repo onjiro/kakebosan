@@ -10,7 +10,7 @@ defmodule Kakebosan.Accounting.InventoryControllerTest do
   @invalid_attrs %{amount: "hoge"}
 
   setup %{conn: conn} do
-    Repo.insert! %User{id: 1, provider: "test", uid: "test"}
+    user = Repo.insert! %User{id: 1, provider: "test", uid: "test"}
     Repo.insert! %Side{id: 1, name: "借方"}
     Repo.insert! %Side{id: 2, name: "貸方"}
     Repo.insert! %Type{id: 1, name: "資産", side_id: 1}
@@ -22,26 +22,37 @@ defmodule Kakebosan.Accounting.InventoryControllerTest do
     Repo.insert! %Item{id: 2, name: "食費", selectable: true, type_id: 2, user_id: 1 }
     Repo.insert! %Inventory{id: 1, user_id: 1, item_id: 1,
                             date: Ecto.DateTime.cast!("2017-04-01T00:00:00Z"), amount: 100}
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    # @see https://elixirforum.com/t/test-for-sessions-in-phoenix/2569/2
+    setup_conn =
+      conn
+      |> bypass_through(Kakebosan.Router, :browser)
+      |> post("/")
+      |> fetch_session(:current_user)
+      |> put_session(:current_user, user)
+      |> send_resp(:ok, "")
+    {:ok, %{conn: setup_conn}}
   end
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, inventory_path(conn, :index)
     assert json_response(conn, 200)["data"] == [
-      %{"id" => 1, "date" => "2017-04-01T00:00:00", "amount" => 100}
+      %{"id" => 1, "date" => "2017-04-01T00:00:00", "amount" => 100,
+        "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil},
+        "clearance_transaction" => nil }
     ]
   end
 
   test "shows chosen resource", %{conn: conn} do
     conn = get conn, inventory_path(conn, :show, 1)
     assert json_response(conn, 200)["data"] ==
-      %{"id" => 1, "date" => "2017-04-01T00:00:00", "amount" => 100}
+      %{"id" => 1, "date" => "2017-04-01T00:00:00", "amount" => 100,
+        "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil},
+        "clearance_transaction" => nil }
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
-    assert_error_sent 404, fn ->
-      get conn, inventory_path(conn, :show, -1)
-    end
+    conn = get conn, transaction_path(conn, :show, -1)
+    assert json_response(conn, 404)["error"]
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do

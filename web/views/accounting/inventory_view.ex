@@ -12,6 +12,8 @@ defmodule Kakebosan.Accounting.InventoryView do
   def render("inventory.json", %{inventory: inventory}) do
     %{id: inventory.id,
       date: inventory.date,
-      amount: inventory.amount}
+      item: render_one(inventory.item, Kakebosan.Accounting.ItemView, "item.json"),
+      amount: inventory.amount,
+      clearance_transaction: render_one(inventory.clearance_transaction, Kakebosan.Accounting.TransactionView, "transaction.json")}
   end
 end
