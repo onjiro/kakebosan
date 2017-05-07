@@ -7,17 +7,34 @@ defmodule Kakebosan.Accounting.TransactionController do
   plug :load_and_authorize_resource, model: Transaction, preload: [entries: [:item]]
   plug :scrub_params, "transaction" when action in [:create, :update]
 
+  def index(conn, %{ "date_from" => date_from, "date_to" => date_to }) do
+    render(conn, "index.json", transactions: Repo.all(
+          from t in index_query(conn),
+          where: t.date >= ^Ecto.DateTime.cast!(date_from),
+          where: t.date <= ^Ecto.DateTime.cast!(date_to)))
+  end
+  def index(conn, %{ "date_from" => date_from }) do
+    render(conn, "index.json", transactions: Repo.all(
+          from t in index_query(conn),
+          where: t.date >= ^Ecto.DateTime.cast!(date_from)))
+  end
+  def index(conn, %{ "date_to" => date_to }) do
+    render(conn, "index.json", transactions: Repo.all(
+          from t in index_query(conn),
+          where: t.date <= ^Ecto.DateTime.cast!(date_to)))
+  end
   def index(conn, _params) do
+    render(conn, "index.json", transactions: Repo.all(index_query(conn)))
+  end
+  defp index_query(conn) do
     user = get_session(conn, :current_user)
-    transactions = Repo.all(
-      from t in Transaction,
+
+    from t in Transaction,
       join: e in assoc(t, :entries),
       join: i in assoc(e, :item),
       where: t.user_id == ^user.id,
       order_by: [t.date, t.id],
       preload: [entries: {e, item: i}]
-    )
-    render(conn, "index.json", transactions: transactions)
   end
 
   def create(conn, %{"transaction" => transaction_params}) do

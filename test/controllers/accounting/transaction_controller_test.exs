@@ -27,6 +27,9 @@ defmodule Kakebosan.Accounting.TransactionControllerTest do
     Repo.insert! %Transaction{id: 1, user_id: 1, date: Ecto.DateTime.cast!("2014-01-01T00:00:00Z") }
     Repo.insert! %Entry{id: 1, transaction_id: 1, item_id: 1, side_id: 1, user_id: 1, amount: 100 }
     Repo.insert! %Entry{id: 2, transaction_id: 1, item_id: 2, side_id: 2, user_id: 1, amount: 100 }
+    Repo.insert! %Transaction{id: 2, user_id: 1, date: Ecto.DateTime.cast!("2014-02-01T00:00:00Z") }
+    Repo.insert! %Entry{id: 3, transaction_id: 2, item_id: 1, side_id: 1, user_id: 1, amount: 300 }
+    Repo.insert! %Entry{id: 4, transaction_id: 2, item_id: 2, side_id: 2, user_id: 1, amount: 300 }
 
     # @see https://elixirforum.com/t/test-for-sessions-in-phoenix/2569/2
     setup_conn =
@@ -41,6 +44,22 @@ defmodule Kakebosan.Accounting.TransactionControllerTest do
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, transaction_path(conn, :index)
+    assert json_response(conn, 200)["data"] ==
+      [%{"id" => 1, "date" => "2014-01-01T00:00:00", "description" => nil, "entries" => [
+          %{"id" => 1, "side_id" => 1, "amount" => 100,
+            "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil}},
+          %{"id" => 2, "side_id" => 2, "amount" => 100,
+            "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "description" => nil}}]},
+      %{"id" => 2, "date" => "2014-02-01T00:00:00", "description" => nil, "entries" => [
+          %{"id" => 3, "side_id" => 1, "amount" => 300,
+            "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil}},
+          %{"id" => 4, "side_id" => 2, "amount" => 300,
+            "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "description" => nil}}]}]
+  end
+
+  test "lists limited entries on index with date condition", %{conn: conn} do
+    conn = get conn, transaction_path(conn, :index,
+      date_from: "2014-01-01T00:00:00Z", date_to: "2014-01-31T23:59:59")
     assert json_response(conn, 200)["data"] ==
       [%{"id" => 1, "date" => "2014-01-01T00:00:00", "description" => nil, "entries" => [
           %{"id" => 1, "side_id" => 1, "amount" => 100,
