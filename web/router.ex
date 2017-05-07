@@ -34,6 +34,7 @@ defmodule Kakebosan.Router do
     pipe_through :api
     resources "/items", Accounting.ItemController
     resources "/transactions", Accounting.TransactionController
+    resources "/inventories", Accounting.InventoryController
   end
 
   # Fetch the current user from the session and add it to `conn.assigns`. This
