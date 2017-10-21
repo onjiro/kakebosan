@@ -11,7 +11,7 @@ defmodule KakebosanWeb.Accounting.TransactionView do
 
   def render("transaction.json", %{transaction: transaction}) do
     %{id: transaction.id,
-      date: transaction.date,
+      date: NaiveDateTime.to_iso8601(transaction.date),
       description: transaction.description,
       entries: render_many(transaction.entries, KakebosanWeb.Accounting.EntryView, "entry.json")}
   end

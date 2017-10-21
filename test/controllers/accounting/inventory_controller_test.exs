@@ -36,7 +36,7 @@ defmodule KakebosanWeb.Accounting.InventoryControllerTest do
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, inventory_path(conn, :index)
     assert json_response(conn, 200)["data"] == [
-      %{"id" => 1, "date" => "2017-04-01T00:00:00", "amount" => 100,
+      %{"id" => 1, "date" => "2017-04-01T00:00:00.000000", "amount" => 100,
         "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil},
         "clearance_transaction" => nil }
     ]
@@ -45,7 +45,7 @@ defmodule KakebosanWeb.Accounting.InventoryControllerTest do
   test "shows chosen resource", %{conn: conn} do
     conn = get conn, inventory_path(conn, :show, 1)
     assert json_response(conn, 200)["data"] ==
-      %{"id" => 1, "date" => "2017-04-01T00:00:00", "amount" => 100,
+      %{"id" => 1, "date" => "2017-04-01T00:00:00.000000", "amount" => 100,
         "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil},
         "clearance_transaction" => nil }
   end

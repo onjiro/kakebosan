@@ -3,7 +3,7 @@ defmodule KakebosanWeb.Accounting.TransactionTest do
 
   alias KakebosanWeb.Accounting.Transaction
 
-  @valid_attrs %{date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010}, description: "some content"}
+  @valid_attrs %{date: ~N[2010-04-17 14:00:00], description: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

@@ -2,7 +2,7 @@ defmodule KakebosanWeb.Accounting.Inventory do
   use Kakebosan.Web, :model
 
   schema "accounting_inventories" do
-    field :date, Ecto.DateTime
+    field :date, :naive_datetime
     field :amount, :integer
     belongs_to :user, KakebosanWeb.User
     belongs_to :item, KakebosanWeb.Accounting.Item

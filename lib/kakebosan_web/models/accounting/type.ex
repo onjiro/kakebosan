@@ -3,7 +3,7 @@ defmodule KakebosanWeb.Accounting.Type do
 
   schema "accounting_types" do
     field :name, :string
-    field :deleted_at, Ecto.DateTime
+    field :deleted_at, :naive_datetime
     belongs_to :side, KakebosanWeb.Accounting.Side
 
     timestamps()

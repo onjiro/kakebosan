@@ -10,18 +10,18 @@ defmodule KakebosanWeb.Accounting.TransactionController do
   def index(conn, %{ "date_from" => date_from, "date_to" => date_to }) do
     render(conn, "index.json", transactions: Repo.all(
           from t in index_query(conn),
-          where: t.date >= ^Ecto.DateTime.cast!(date_from),
-          where: t.date <= ^Ecto.DateTime.cast!(date_to)))
+          where: t.date >= ^NaiveDateTime.from_iso8601!(date_from),
+          where: t.date <= ^NaiveDateTime.from_iso8601!(date_to)))
   end
   def index(conn, %{ "date_from" => date_from }) do
     render(conn, "index.json", transactions: Repo.all(
           from t in index_query(conn),
-          where: t.date >= ^Ecto.DateTime.cast!(date_from)))
+          where: t.date >= ^NaiveDateTime.from_iso8601!(date_from)))
   end
   def index(conn, %{ "date_to" => date_to }) do
     render(conn, "index.json", transactions: Repo.all(
           from t in index_query(conn),
-          where: t.date <= ^Ecto.DateTime.cast!(date_to)))
+          where: t.date <= ^NaiveDateTime.from_iso8601!(date_to)))
   end
   def index(conn, _params) do
     render(conn, "index.json", transactions: Repo.all(index_query(conn)))
