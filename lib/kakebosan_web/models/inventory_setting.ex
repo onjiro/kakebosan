@@ -3,8 +3,8 @@ defmodule KakebosanWeb.InventorySetting do
 
   schema "inventory_setting" do
     belongs_to :user, KakebosanWeb.User
-    belongs_to :debit_item, KakebosanWeb.DebitItem
-    belongs_to :credit_item, KakebosanWeb.CreditItem
+    belongs_to :debit_item, KakebosanWeb.Accounting.Item
+    belongs_to :credit_item, KakebosanWeb.Accounting.Item
 
     timestamps()
   end
