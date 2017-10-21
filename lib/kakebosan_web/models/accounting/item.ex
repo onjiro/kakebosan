@@ -80,12 +80,11 @@ defmodule KakebosanWeb.Accounting.Item do
                         %{ name: "ポイント発生"                 , description: "" },
                         %{ name: "その他雑収入"                 , description: "" } ]
     }
-    IO.puts inspect user
     for {type_id, items} <- sources do
       for item <- items do
         Kakebosan.Repo.insert(Item.changeset(%KakebosanWeb.Accounting.Item{user: user, type_id: type_id},
               item
-              |> Dict.put(:type_id, type_id) ))
+              |> Map.put(:type_id, type_id) ))
       end
     end
   end
