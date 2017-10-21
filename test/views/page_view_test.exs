@@ -1,3 +1,3 @@
-defmodule Kakebosan.PageViewTest do
-  use Kakebosan.ConnCase, async: true
+defmodule KakebosanWeb.PageViewTest do
+  use KakebosanWeb.ConnCase, async: true
 end

@@ -1,4 +1,4 @@
-defmodule Kakebosan.ConnCase do
+defmodule KakebosanWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -25,10 +25,10 @@ defmodule Kakebosan.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import Kakebosan.Router.Helpers
+      import KakebosanWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint Kakebosan.Endpoint
+      @endpoint KakebosanWeb.Endpoint
     end
   end
 

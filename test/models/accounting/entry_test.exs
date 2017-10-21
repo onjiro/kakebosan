@@ -1,7 +1,7 @@
-defmodule Kakebosan.Accounting.EntryTest do
-  use Kakebosan.ModelCase
+defmodule KakebosanWeb.Accounting.EntryTest do
+  use KakebosanWeb.ModelCase
 
-  alias Kakebosan.Accounting.Entry
+  alias KakebosanWeb.Accounting.Entry
 
   @valid_attrs %{amount: 42}
   @invalid_attrs %{}

@@ -1,10 +1,10 @@
-defmodule Kakebosan.Accounting.ItemControllerTest do
-  use Kakebosan.ConnCase
+defmodule KakebosanWeb.Accounting.ItemControllerTest do
+  use KakebosanWeb.ConnCase
 
-  alias Kakebosan.User
-  alias Kakebosan.Accounting.Side
-  alias Kakebosan.Accounting.Type
-  alias Kakebosan.Accounting.Item
+  alias KakebosanWeb.User
+  alias KakebosanWeb.Accounting.Side
+  alias KakebosanWeb.Accounting.Type
+  alias KakebosanWeb.Accounting.Item
   @valid_attrs %{ name: "some content", user_id: 1, type_id: 1 }
   @invalid_attrs %{ user_id: "hoge" }
 
@@ -20,8 +20,8 @@ defmodule Kakebosan.Accounting.ItemControllerTest do
     # @see https://elixirforum.com/t/test-for-sessions-in-phoenix/2569/2
     setup_conn =
       conn
-      |> bypass_through(Kakebosan.Router, :browser)
-      |> post("/")
+      |> bypass_through(KakebosanWeb.Router, :browser)
+      |> get("/")
       |> fetch_session(:current_user)
       |> put_session(:current_user, user)
       |> send_resp(:ok, "")

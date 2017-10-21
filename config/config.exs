@@ -10,11 +10,11 @@ config :kakebosan,
   ecto_repos: [Kakebosan.Repo]
 
 # Configures the endpoint
-config :kakebosan, Kakebosan.Endpoint,
+config :kakebosan, KakebosanWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "OTFFgNI5OSoJLNCXvxeWDQjWUGa+hwUU+7h7dHoe46508PoTGUEZc6Fk3VtMlwyr",
-  render_errors: [view: Kakebosan.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Kakebosan.PubSub,
+  render_errors: [view: KakebosanWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: KakebosanWeb.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger

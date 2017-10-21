@@ -1,13 +1,13 @@
-defmodule Kakebosan.Accounting.TransactionControllerTest do
-  use Kakebosan.ConnCase
+defmodule KakebosanWeb.Accounting.TransactionControllerTest do
+  use KakebosanWeb.ConnCase
 
-  alias Kakebosan.User
-  alias Kakebosan.Accounting.Side
-  alias Kakebosan.Accounting.Type
-  alias Kakebosan.Accounting.Item
-  alias Kakebosan.Accounting.Entry
-  alias Kakebosan.Accounting.Transaction
-  @valid_attrs %{ date: Ecto.DateTime.cast!("2017-04-01T00:00:00Z"),
+  alias KakebosanWeb.User
+  alias KakebosanWeb.Accounting.Side
+  alias KakebosanWeb.Accounting.Type
+  alias KakebosanWeb.Accounting.Item
+  alias KakebosanWeb.Accounting.Entry
+  alias KakebosanWeb.Accounting.Transaction
+  @valid_attrs %{ date: ~N[2017-04-01 00:00:00],
                   entries: [%{side_id: 1, amount: 200, item: %{id: 1}},
                             %{side_id: 2, amount: 200, item: %{id: 2}}] }
   @invalid_attrs %{ date: "hoge" }
@@ -24,18 +24,18 @@ defmodule Kakebosan.Accounting.TransactionControllerTest do
     Repo.insert! %Item{id: 1, name: "現金", selectable: true, type_id: 1, user_id: 1 }
     Repo.insert! %Item{id: 2, name: "食費", selectable: true, type_id: 2, user_id: 1 }
 
-    Repo.insert! %Transaction{id: 1, user_id: 1, date: Ecto.DateTime.cast!("2014-01-01T00:00:00Z") }
+    Repo.insert! %Transaction{id: 1, user_id: 1, date: ~N[2014-01-01 00:00:00]}
     Repo.insert! %Entry{id: 1, transaction_id: 1, item_id: 1, side_id: 1, user_id: 1, amount: 100 }
     Repo.insert! %Entry{id: 2, transaction_id: 1, item_id: 2, side_id: 2, user_id: 1, amount: 100 }
-    Repo.insert! %Transaction{id: 2, user_id: 1, date: Ecto.DateTime.cast!("2014-02-01T00:00:00Z") }
+    Repo.insert! %Transaction{id: 2, user_id: 1, date: ~N[2014-02-01 00:00:00]}
     Repo.insert! %Entry{id: 3, transaction_id: 2, item_id: 1, side_id: 1, user_id: 1, amount: 300 }
     Repo.insert! %Entry{id: 4, transaction_id: 2, item_id: 2, side_id: 2, user_id: 1, amount: 300 }
 
     # @see https://elixirforum.com/t/test-for-sessions-in-phoenix/2569/2
     setup_conn =
       conn
-      |> bypass_through(Kakebosan.Router, :browser)
-      |> post("/")
+      |> bypass_through(KakebosanWeb.Router, :browser)
+      |> get("/")
       |> fetch_session(:current_user)
       |> put_session(:current_user, user)
       |> send_resp(:ok, "")

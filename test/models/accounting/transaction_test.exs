@@ -1,7 +1,7 @@
-defmodule Kakebosan.Accounting.TransactionTest do
-  use Kakebosan.ModelCase
+defmodule KakebosanWeb.Accounting.TransactionTest do
+  use KakebosanWeb.ModelCase
 
-  alias Kakebosan.Accounting.Transaction
+  alias KakebosanWeb.Accounting.Transaction
 
   @valid_attrs %{date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010}, description: "some content"}
   @invalid_attrs %{}

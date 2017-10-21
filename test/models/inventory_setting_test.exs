@@ -1,7 +1,7 @@
-defmodule Kakebosan.InventorySettingTest do
-  use Kakebosan.ModelCase
+defmodule KakebosanWeb.InventorySettingTest do
+  use KakebosanWeb.ModelCase
 
-  alias Kakebosan.InventorySetting
+  alias KakebosanWeb.InventorySetting
 
   @valid_attrs %{}
   @invalid_attrs %{user_id: "hoge"}

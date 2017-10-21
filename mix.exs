@@ -17,31 +17,31 @@ defmodule Kakebosan.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {Kakebosan, []},
+    [mod: {Kakebosan.Application, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
                     :phoenix_ecto, :postgrex,
                     :ueberauth, :ueberauth_identity, :ueberauth_github, :ueberauth_twitter]]
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
-  defp elixirc_paths(_),     do: ["lib", "web"]
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_),     do: ["lib"]
 
   # Specifies your project dependencies.
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.2.1"},
+    [{:phoenix, "~> 1.3.0"},
      {:phoenix_pubsub, "~> 1.0"},
-     {:phoenix_ecto, "~> 3.0"},
+     {:phoenix_ecto, "~> 3.3"},
      {:postgrex, ">= 0.0.0"},
-     {:phoenix_html, "~> 2.6"},
-     {:phoenix_live_reload, "~> 1.0", only: :dev},
-     {:gettext, "~> 0.11"},
+     {:phoenix_html, "~> 2.10"},
+     {:phoenix_live_reload, "~> 1.1", only: :dev},
+     {:gettext, "~> 0.13"},
      {:cowboy, "~> 1.0"},
-     {:ueberauth, "~> 0.2"},
+     {:ueberauth, "~> 0.4"},
      {:ueberauth_identity, "~> 0.2"},
-     {:ueberauth_github, "~> 0.2"},
+     {:ueberauth_github, "~> 0.5"},
      {:ueberauth_twitter, "~> 0.2"},
      {:oauth, github: "tim/erlang-oauth"}, # required by ueberauth_twitter
      {:canary, "~> 1.0.0"},

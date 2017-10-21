@@ -1,7 +1,7 @@
-defmodule Kakebosan.Accounting.SideTest do
-  use Kakebosan.ModelCase
+defmodule KakebosanWeb.Accounting.SideTest do
+  use KakebosanWeb.ModelCase
 
-  alias Kakebosan.Accounting.Side
+  alias KakebosanWeb.Accounting.Side
 
   @valid_attrs %{deleted_at: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010}, name: "some content"}
   @invalid_attrs %{}

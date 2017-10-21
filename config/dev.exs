@@ -6,22 +6,22 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
-config :kakebosan, Kakebosan.Endpoint,
+config :kakebosan, KakebosanWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: [npm: ["start"]]
+  watchers: [npm: ["start", cd: "assets"]]
 
 
 # Watch static and templates for browser reloading.
-config :kakebosan, Kakebosan.Endpoint,
+config :kakebosan, KakebosanWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
-      ~r{web/views/.*(ex)$},
-      ~r{web/templates/.*(eex)$}
+      ~r{lib/kakebosan_web/views/.*(ex)$},
+      ~r{lib/kakebosan_web/templates/.*(eex)$}
     ]
   ]
 

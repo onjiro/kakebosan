@@ -1,12 +1,12 @@
-defmodule Kakebosan.Accounting.InventoryControllerTest do
-  use Kakebosan.ConnCase
+defmodule KakebosanWeb.Accounting.InventoryControllerTest do
+  use KakebosanWeb.ConnCase
 
-  alias Kakebosan.User
-  alias Kakebosan.Accounting.Side
-  alias Kakebosan.Accounting.Type
-  alias Kakebosan.Accounting.Item
-  alias Kakebosan.Accounting.Inventory
-  @valid_attrs %{user_id: 1, item_id: 2, amount: 123, date: Ecto.DateTime.cast!("2017-05-01T00:00:00Z")}
+  alias KakebosanWeb.User
+  alias KakebosanWeb.Accounting.Side
+  alias KakebosanWeb.Accounting.Type
+  alias KakebosanWeb.Accounting.Item
+  alias KakebosanWeb.Accounting.Inventory
+  @valid_attrs %{user_id: 1, item_id: 2, amount: 123, date: ~N[2017-05-01 00:00:00]}
   @invalid_attrs %{amount: "hoge"}
 
   setup %{conn: conn} do
@@ -21,12 +21,12 @@ defmodule Kakebosan.Accounting.InventoryControllerTest do
     Repo.insert! %Item{id: 1, name: "現金", selectable: true, type_id: 1, user_id: 1 }
     Repo.insert! %Item{id: 2, name: "食費", selectable: true, type_id: 2, user_id: 1 }
     Repo.insert! %Inventory{id: 1, user_id: 1, item_id: 1,
-                            date: Ecto.DateTime.cast!("2017-04-01T00:00:00Z"), amount: 100}
+                            date: ~N[2017-04-01 00:00:00], amount: 100}
     # @see https://elixirforum.com/t/test-for-sessions-in-phoenix/2569/2
     setup_conn =
       conn
-      |> bypass_through(Kakebosan.Router, :browser)
-      |> post("/")
+      |> bypass_through(KakebosanWeb.Router, :browser)
+      |> get("/")
       |> fetch_session(:current_user)
       |> put_session(:current_user, user)
       |> send_resp(:ok, "")

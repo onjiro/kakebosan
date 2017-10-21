@@ -1,5 +1,5 @@
-defmodule Kakebosan.PageControllerTest do
-  use Kakebosan.ConnCase
+defmodule KakebosanWeb.PageControllerTest do
+  use KakebosanWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

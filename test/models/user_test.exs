@@ -1,7 +1,7 @@
-defmodule Kakebosan.UserTest do
-  use Kakebosan.ModelCase
+defmodule KakebosanWeb.UserTest do
+  use KakebosanWeb.ModelCase
 
-  alias Kakebosan.User
+  alias KakebosanWeb.User
 
   @valid_attrs %{access_token: "some content", email: "some content", image_url: "some content", name: "some content", provider: "some content", uid: "some content"}
   @invalid_attrs %{}
