@@ -24,12 +24,12 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
     Repo.insert! %Item{id: 1, name: "現金", selectable: true, type_id: 1, user_id: 1 }
     Repo.insert! %Item{id: 2, name: "食費", selectable: true, type_id: 2, user_id: 1 }
 
-    Repo.insert! %Transaction{id: 1, user_id: 1, date: ~N[2014-01-01 00:00:00]}
-    Repo.insert! %Entry{id: 1, transaction_id: 1, item_id: 1, side_id: 1, user_id: 1, amount: 100 }
-    Repo.insert! %Entry{id: 2, transaction_id: 1, item_id: 2, side_id: 2, user_id: 1, amount: 100 }
-    Repo.insert! %Transaction{id: 2, user_id: 1, date: ~N[2014-02-01 00:00:00]}
-    Repo.insert! %Entry{id: 3, transaction_id: 2, item_id: 1, side_id: 1, user_id: 1, amount: 300 }
-    Repo.insert! %Entry{id: 4, transaction_id: 2, item_id: 2, side_id: 2, user_id: 1, amount: 300 }
+    Repo.insert! %Transaction{id: 0, user_id: 1, date: ~N[2014-01-01 00:00:00]}
+    Repo.insert! %Entry{id: -1, transaction_id: 0, item_id: 1, side_id: 1, user_id: 1, amount: 100 }
+    Repo.insert! %Entry{id: -2, transaction_id: 0, item_id: 2, side_id: 2, user_id: 1, amount: 100 }
+    Repo.insert! %Transaction{id: -1, user_id: 1, date: ~N[2014-02-01 00:00:00]}
+    Repo.insert! %Entry{id: -3, transaction_id: -1, item_id: 1, side_id: 1, user_id: 1, amount: 300 }
+    Repo.insert! %Entry{id: -4, transaction_id: -1, item_id: 2, side_id: 2, user_id: 1, amount: 300 }
 
     # @see https://elixirforum.com/t/test-for-sessions-in-phoenix/2569/2
     setup_conn =
@@ -45,15 +45,15 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, transaction_path(conn, :index)
     assert json_response(conn, 200)["data"] ==
-      [%{"id" => 1, "date" => "2014-01-01T00:00:00.000000", "description" => nil, "entries" => [
-          %{"id" => 1, "side_id" => 1, "amount" => 100,
+      [%{"id" => 0, "date" => "2014-01-01T00:00:00.000000", "description" => nil, "entries" => [
+          %{"id" => -1, "side_id" => 1, "amount" => 100,
             "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil}},
-          %{"id" => 2, "side_id" => 2, "amount" => 100,
+          %{"id" => -2, "side_id" => 2, "amount" => 100,
             "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "description" => nil}}]},
-      %{"id" => 2, "date" => "2014-02-01T00:00:00.000000", "description" => nil, "entries" => [
-          %{"id" => 3, "side_id" => 1, "amount" => 300,
+      %{"id" => -1, "date" => "2014-02-01T00:00:00.000000", "description" => nil, "entries" => [
+          %{"id" => -3, "side_id" => 1, "amount" => 300,
             "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil}},
-          %{"id" => 4, "side_id" => 2, "amount" => 300,
+          %{"id" => -4, "side_id" => 2, "amount" => 300,
             "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "description" => nil}}]}]
   end
 
@@ -61,25 +61,25 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
     conn = get conn, transaction_path(conn, :index,
       date_from: "2014-01-01T00:00:00Z", date_to: "2014-01-31T23:59:59")
     assert json_response(conn, 200)["data"] ==
-      [%{"id" => 1, "date" => "2014-01-01T00:00:00.000000", "description" => nil, "entries" => [
-          %{"id" => 1, "side_id" => 1, "amount" => 100,
+      [%{"id" => 0, "date" => "2014-01-01T00:00:00.000000", "description" => nil, "entries" => [
+          %{"id" => -1, "side_id" => 1, "amount" => 100,
             "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil}},
-          %{"id" => 2, "side_id" => 2, "amount" => 100,
+          %{"id" => -2, "side_id" => 2, "amount" => 100,
             "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "description" => nil}}]}]
   end
 
   test "shows chosen resource", %{conn: conn} do
-    conn = get conn, transaction_path(conn, :show, 1)
+    conn = get conn, transaction_path(conn, :show, 0)
     assert json_response(conn, 200)["data"] ==
-      %{"id" => 1, "date" => "2014-01-01T00:00:00.000000", "description" => nil, "entries" => [
-          %{"id" => 1, "side_id" => 1, "amount" => 100,
+      %{"id" => 0, "date" => "2014-01-01T00:00:00.000000", "description" => nil, "entries" => [
+          %{"id" => -1, "side_id" => 1, "amount" => 100,
             "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil}},
-          %{"id" => 2, "side_id" => 2, "amount" => 100,
+          %{"id" => -2, "side_id" => 2, "amount" => 100,
             "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "description" => nil}}]}
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
-    conn = get conn, transaction_path(conn, :show, -1)
+    conn = get conn, transaction_path(conn, :show, -2)
     assert json_response(conn, 404)["error"]
   end
 
@@ -95,7 +95,7 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
-    conn = put conn, transaction_path(conn, :update, 1), transaction: @valid_attrs
+    conn = put conn, transaction_path(conn, :update, 0), transaction: @valid_attrs
     assert json_response(conn, 200)["data"]["id"]
     transaction = Repo.get_by!(Transaction, %{ date: @valid_attrs[:date] })
     assert transaction
@@ -103,13 +103,13 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    conn = put conn, transaction_path(conn, :update, 1), transaction: @invalid_attrs
+    conn = put conn, transaction_path(conn, :update, 0), transaction: @invalid_attrs
     assert json_response(conn, 422)["errors"] != %{}
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    conn = delete conn, transaction_path(conn, :delete, 1)
+    conn = delete conn, transaction_path(conn, :delete, 0)
     assert response(conn, 204)
-    refute Repo.get(Transaction, 1)
+    refute Repo.get(Transaction, 0)
   end
 end
