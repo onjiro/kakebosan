@@ -7,8 +7,9 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>家計簿さん</title>
-        <link rel="stylesheet" href="<%= static_path(@conn, ~s(/css/bootstrap.min.css)) %>">
-        <link rel="stylesheet" href="<%= static_path(@conn, ~s(/css/react-select.min.css)) %>">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+        <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
         <link rel="stylesheet" href="<%= static_path(@conn, ~s(/css/app.css)) %>">
     </head>
 
