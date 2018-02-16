@@ -1,23 +1,29 @@
 <template>
 <div>
+  <div class="md-title">ダッシュボード</div>
+
   {{ notice }}
-  <recent-history/>
-  <entry-modal ref="entryModal"/>
-  <new-entry-button-form @click.native="openEntryModal" />
+  <recent-history v-model="transactions" @selected="openSelectedTransaction"/>
+
+  <entry-modal title="登録" ref="entryModal"/>
+  <new-entry-button-form @click.native="openNewTransaction" />
 </div>
 </template>
 
 <style scoped>
+.fixed-bottom {
+    position: fixed;
+    bottom: 0;
+}
 </style>
 
 <script>
-import Vue from 'vue';
-import VueMdl from 'vue-mdl';
-Vue.use(VueMdl);
-
+import moment from "moment";
+import axios from "axios";
+import _ from "lodash";
 import NewEntryButtonForm from '@/components/organisms/NewEntryButtonForm';
-import RecentHistory from '@/components/organisms/RecentHistory';
-import EntryModal from '@/components/organisms/EntryModal';
+import RecentHistory from '@/components/templates/RecentHistory';
+import EntryModal from '@/components/templates/EntryModal';
 
 export default {
   name: 'DashBoard',
@@ -26,12 +32,35 @@ export default {
     RecentHistory,
     EntryModal
   },
+  data: function() {
+    return {
+      dateFrom: moment().subtract(7, 'days').toISOString(),
+      dateTo: null,
+      transactions: []
+    }
+  },
+  created: function() {
+    axios.get(`api/transactions`, {
+      data: {
+        dateFrom: this.dateFrom,
+        dateTo: this.dateTo
+      }
+    }).then(({ data: { data: transactions }}) => {
+      this.transactions = this.transactions.concat(transactions);
+    })
+  },
   methods: {
     /**
-     * 登録モーダルを開きます
+     * 新しい取引登録モーダルを開きます
      */
-    openEntryModal: function() {
+    openNewTransaction: function() {
       this.$refs.entryModal.open();
+    },
+    /**
+     * 選択された取引詳細をモーダルで開きます
+     */
+    openSelectedTransaction: function(transaction) {
+      this.$refs.entryModal.open(transaction);
     }
   }
 }

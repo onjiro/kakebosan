@@ -5,6 +5,13 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import VueMaterial from 'vue-material'
+import VueMoment from 'vue-moment'
+
+Vue.use(VueMaterial);
+Vue.use(VueMoment);
+
 export default {
   name: 'app'
 }
