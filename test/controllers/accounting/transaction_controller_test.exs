@@ -8,8 +8,8 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
   alias KakebosanWeb.Accounting.Entry
   alias KakebosanWeb.Accounting.Transaction
   @valid_attrs %{ date: ~N[2017-04-01 00:00:00],
-                  entries: [%{side_id: 1, amount: 200, item: %{id: 1}},
-                            %{side_id: 2, amount: 200, item: %{id: 2}}] }
+                  entries: [%{side_id: 1, amount: 200, item_id: 1},
+                            %{side_id: 2, amount: 200, item_id: 2}] }
   @invalid_attrs %{ date: "hoge" }
 
   setup %{conn: conn} do
