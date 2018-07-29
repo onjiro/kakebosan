@@ -91,11 +91,14 @@ export default {
         }
       };
 
-      if (this.id) {
-        axios.put(`api/transactions/${this.id}`, data);
-      } else {
-        axios.post('api/transactions', data);
-      }
+      ((this.id)
+       ? axios.put(`api/transactions/${this.id}`, data)
+       : axios.post('api/transactions', data)
+      ).then((res) => {
+        console.log(res);
+        this.close();
+        this.$emit('submitted', res.data.data);
+      });
     }
   }
 }

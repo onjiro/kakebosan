@@ -5,7 +5,8 @@
   {{ notice }}
   <recent-history v-model="transactions" @selected="openSelectedTransaction"/>
 
-  <entry-modal title="登録" ref="entryModal" :items="items" />
+  <entry-modal title="登録" ref="entryModal" :items="items"
+               @submitted="onTransactionSubmitted"/>
   <new-entry-button-form @click.native="openNewTransaction" />
 </div>
 </template>
@@ -36,24 +37,31 @@ export default {
     return {
       dateFrom: moment().subtract(7, 'days').toISOString(),
       dateTo: null,
-      transactions: []
+      transactions: [],
+      notice: '',
     }
   },
   created: function() {
-    Promise.all([
-      axios.get('api/transactions', {
-        data: {
-          dateFrom: this.dateFrom,
-          dateTo: this.dateTo
-        }
-      }),
-      axios.get('api/items')
-    ]).then(([{ data: { data: transactions }}, { data: { data: items }}]) => {
-      this.transactions = transactions;
-      this.items = items;
-    })
+    this.reload();
   },
   methods: {
+    /**
+     * トランザクションを読み込み直す
+     */
+    reload: function() {
+      Promise.all([
+        axios.get('api/transactions', {
+          data: {
+            dateFrom: this.dateFrom,
+            dateTo: this.dateTo
+          }
+        }),
+        axios.get('api/items')
+      ]).then(([{ data: { data: transactions }}, { data: { data: items }}]) => {
+        this.transactions = transactions;
+        this.items = items;
+      });
+    },
     /**
      * 新しい取引登録モーダルを開きます
      */
@@ -65,6 +73,14 @@ export default {
      */
     openSelectedTransaction: function(transaction) {
       this.$refs.entryModal.open(transaction);
+    },
+    /**
+     * transactionの更新があった場合の挙動
+     */
+    onTransactionSubmitted: function(data) {
+      this.reload();
+      this.notice = '登録が完了しました。'
+      window.setTimeout(() => this.notice = '', 5000);
     }
   }
 }
