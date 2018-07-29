@@ -19,7 +19,7 @@ function resolve (dir) {
 module.exports = {
   devtool: '#source-map',
   entry: {
-    app: ["./js/main.js"]
+    app: ["babel-polyfill", "./js/main.js"]
   },
   output: {
     path: path.resolve(__dirname, '../priv/static'),
@@ -128,7 +128,8 @@ module.exports = {
     }),
     // extract css into its own file
     new ExtractTextPlugin({
-      filename: utils.assetsPath('css/[name].[contenthash].css')
+      //filename: utils.assetsPath('css/[name].[contenthash].css')
+      filename: utils.assetsPath('css/[name].css')
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.

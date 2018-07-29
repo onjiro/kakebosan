@@ -4,9 +4,9 @@
 
   <md-datepicker v-model="date" />
 
-  <entry-side-form title="借方" v-model="debits"/>
+  <entry-side-form title="借方" v-model="debits" :items="items"/>
 
-  <entry-side-form title="貸方" v-model="credits"/>
+  <entry-side-form title="貸方" v-model="credits" :items="items"/>
 
   <md-field>
     <label>備考</label>
@@ -22,25 +22,51 @@
 
 <script>
 import EntrySideForm from '@/components/organisms/EntrySideForm';
+import moment from 'moment';
+import axios from "axios";
 
 export default {
   name: 'EntryModal',
   components: { EntrySideForm },
-  props: ['title'],
+  props: {
+    title: String,
+    items: Array
+  },
   data: () => ({
     isShow: false,
-
+    id: null,
     date: null,
-    debits:  [{type: 0, amount: null}],
-    credits: [{type: 0, amount: null}],
+    debits:  [{item_id: null, amount: null}],
+    credits: [{item_id: null, amount: null}],
     description: ""
   }),
   methods: {
     /**
      * このモーダルを表示します
      */
-    open: function() {
+    open: function(transaction) {
       this.isShow = true;
+      if (transaction) {
+        this.id = transaction.id;
+        this.date = transaction.date;
+        this.debits = (transaction.entries || []).filter((entry) => entry.side_id === 2).map((e) => ({
+          id: e.id,
+          item_id: e.item.id,
+          amount: e.amount,
+        }));
+        this.credits = (transaction.entries || []).filter((entry) => entry.side_id === 1).map((e) => ({
+          id: e.id,
+          item_id: e.item.id,
+          amount: e.amount,
+        }));
+        this.description = transaction.description;
+      } else {
+        this.id = null;
+        this.date = null;
+        this.debits = [{item_id: null, amount: null}];
+        this.credits = [{item_id: null, amount: null}];
+        this.description = "";
+      }
     },
     /**
      * このモーダルを除去します
@@ -53,8 +79,23 @@ export default {
      * このモーダルの入力内容を登録します
      */
     submit: function() {
-      // TODO
-      console.log(this.date, this.debits, this.credits, this.description);
+      let data = {
+        transaction: {
+          id: this.id,
+          date: this.date,
+          entries: ([]).concat(
+            this.debits.map((e) => ({side_id: 1, item_id: e.item_id, amount: e.amount})),
+            this.credits.map((e) => ({side_id: 2, item_id: e.item_id, amount: e.amount})),
+          ),
+          description: this.description,
+        }
+      };
+
+      if (this.id) {
+        axios.put(`api/transactions/${this.id}`, data);
+      } else {
+        axios.post('api/transactions', data);
+      }
     }
   }
 }

@@ -6,11 +6,20 @@
 
 <script>
 import Vue from 'vue';
-import VueMaterial from 'vue-material'
-import VueMoment from 'vue-moment'
+import VueMoment from 'vue-moment';
+import { MdButton, MdField, MdContent, MdDatepicker, MdTable, MdSubheader, MdToolbar, MdDialog } from 'vue-material/dist/components';
+import 'vue-material/dist/vue-material.min.css'
+import 'vue-material/dist/theme/default.css'
 
-Vue.use(VueMaterial);
 Vue.use(VueMoment);
+Vue.use(MdButton);
+Vue.use(MdField);
+Vue.use(MdContent);
+Vue.use(MdDatepicker);
+Vue.use(MdTable);
+Vue.use(MdSubheader);
+Vue.use(MdToolbar);
+Vue.use(MdDialog);
 
 export default {
   name: 'app'

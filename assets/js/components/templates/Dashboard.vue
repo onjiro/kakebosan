@@ -5,7 +5,7 @@
   {{ notice }}
   <recent-history v-model="transactions" @selected="openSelectedTransaction"/>
 
-  <entry-modal title="登録" ref="entryModal"/>
+  <entry-modal title="登録" ref="entryModal" :items="items" />
   <new-entry-button-form @click.native="openNewTransaction" />
 </div>
 </template>
@@ -40,13 +40,17 @@ export default {
     }
   },
   created: function() {
-    axios.get(`api/transactions`, {
-      data: {
-        dateFrom: this.dateFrom,
-        dateTo: this.dateTo
-      }
-    }).then(({ data: { data: transactions }}) => {
-      this.transactions = this.transactions.concat(transactions);
+    Promise.all([
+      axios.get('api/transactions', {
+        data: {
+          dateFrom: this.dateFrom,
+          dateTo: this.dateTo
+        }
+      }),
+      axios.get('api/items')
+    ]).then(([{ data: { data: transactions }}, { data: { data: items }}]) => {
+      this.transactions = transactions;
+      this.items = items;
     })
   },
   methods: {
