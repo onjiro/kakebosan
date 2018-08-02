@@ -2,7 +2,7 @@ defmodule KakebosanWeb.Accounting.Transaction do
   use Kakebosan.Web, :model
 
   schema "accounting_transactions" do
-    field :date, :naive_datetime
+    field :date, :utc_datetime
     field :description, :string
     belongs_to :user, KakebosanWeb.User
     has_many :entries, KakebosanWeb.Accounting.Entry, on_replace: :delete, on_delete: :delete_all

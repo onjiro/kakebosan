@@ -10,7 +10,7 @@
       <md-table-head>金額</md-table-head>
     </md-table-row>
     <md-table-row v-for="transaction in value" :key="transaction.id" @click.native="onSelected(transaction)">
-      <md-table-cell>{{ transaction.date | moment('YYYY/MM/DD') }}</md-table-cell>
+      <md-table-cell>{{ transaction.date | utc('YYYY/MM/DD') }}</md-table-cell>
       <md-table-cell>{{ transaction.entries | debits | displayItemNames }}</md-table-cell>
       <md-table-cell class="md-xsmall-hide">{{ transaction.entries | debits | amountSum }}</md-table-cell>
       <md-table-cell class="md-xsmall-hide">{{ transaction.entries | credits | displayItemNames }}</md-table-cell>
@@ -24,6 +24,8 @@
 </style>
 
 <script>
+import moment from 'moment';
+
 export default {
   name: 'RecentHistory',
   props: {
@@ -38,6 +40,9 @@ export default {
     }
   },
   filters: {
+    utc: function(date, formatString) {
+      return moment.utc(date).format(formatString);
+    },
     debits: function(entries) {
       return (entries || []).filter((entry) => entry.side_id === 2);
     },

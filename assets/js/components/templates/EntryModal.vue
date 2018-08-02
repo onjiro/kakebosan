@@ -82,7 +82,7 @@ export default {
       let data = {
         transaction: {
           id: this.id,
-          date: this.date,
+          date: moment(this.date).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z',
           entries: ([]).concat(
             this.debits.map((e) => ({side_id: 1, item_id: e.item_id, amount: e.amount})),
             this.credits.map((e) => ({side_id: 2, item_id: e.item_id, amount: e.amount})),
@@ -95,7 +95,6 @@ export default {
        ? axios.put(`api/transactions/${this.id}`, data)
        : axios.post('api/transactions', data)
       ).then((res) => {
-        console.log(res);
         this.close();
         this.$emit('submitted', res.data.data);
       });
