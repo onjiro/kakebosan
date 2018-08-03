@@ -62,7 +62,7 @@ export default {
         this.description = transaction.description;
       } else {
         this.id = null;
-        this.date = null;
+        this.date = moment().startOf('day').toDate();
         this.debits = [{item_id: null, amount: null}];
         this.credits = [{item_id: null, amount: null}];
         this.description = "";
