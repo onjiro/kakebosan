@@ -2,7 +2,7 @@
 <md-dialog :md-active.sync="isShow" md-fullscreen="false">
   <md-dialog-title>{{title}}</md-dialog-title>
 
-  <md-datepicker v-model="date" />
+  <md-datepicker v-model="date" md-immediately />
 
   <entry-side-form title="借方" v-model="debits" :items="items"/>
 
