@@ -58,7 +58,7 @@ export default {
         }),
         axios.get('api/items')
       ]).then(([{ data: { data: transactions }}, { data: { data: items }}]) => {
-        this.transactions = transactions;
+        this.transactions = transactions.reverse();
         this.items = items;
       });
     },
