@@ -7,7 +7,7 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
   alias KakebosanWeb.Accounting.Item
   alias KakebosanWeb.Accounting.Entry
   alias KakebosanWeb.Accounting.Transaction
-  @valid_attrs %{ date: ~N[2017-04-01 00:00:00],
+  @valid_attrs %{ date: DateTime.from_naive!(~N[2017-04-01 00:00:00], "Etc/UTC"),
                   entries: [%{side_id: 1, amount: 200, item_id: 1},
                             %{side_id: 2, amount: 200, item_id: 2}] }
   @invalid_attrs %{ date: "hoge" }
@@ -24,10 +24,10 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
     Repo.insert! %Item{id: 1, name: "現金", selectable: true, type_id: 1, user_id: 1 }
     Repo.insert! %Item{id: 2, name: "食費", selectable: true, type_id: 2, user_id: 1 }
 
-    Repo.insert! %Transaction{id: 0, user_id: 1, date: ~N[2014-01-01 00:00:00]}
+    Repo.insert! %Transaction{id: 0, user_id: 1, date: DateTime.from_naive!(~N[2014-01-01 00:00:00], "Etc/UTC")}
     Repo.insert! %Entry{id: -1, transaction_id: 0, item_id: 1, side_id: 1, user_id: 1, amount: 100 }
     Repo.insert! %Entry{id: -2, transaction_id: 0, item_id: 2, side_id: 2, user_id: 1, amount: 100 }
-    Repo.insert! %Transaction{id: -1, user_id: 1, date: ~N[2014-02-01 00:00:00]}
+    Repo.insert! %Transaction{id: -1, user_id: 1, date: DateTime.from_naive!(~N[2014-02-01 00:00:00], "Etc/UTC")}
     Repo.insert! %Entry{id: -3, transaction_id: -1, item_id: 1, side_id: 1, user_id: 1, amount: 300 }
     Repo.insert! %Entry{id: -4, transaction_id: -1, item_id: 2, side_id: 2, user_id: 1, amount: 300 }
 
@@ -45,12 +45,12 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, transaction_path(conn, :index)
     assert json_response(conn, 200)["data"] ==
-      [%{"id" => 0, "date" => "2014-01-01T00:00:00.000000", "description" => nil, "entries" => [
+      [%{"id" => 0, "date" => "2014-01-01T00:00:00.000000Z", "description" => nil, "entries" => [
           %{"id" => -1, "side_id" => 1, "amount" => 100,
             "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil}},
           %{"id" => -2, "side_id" => 2, "amount" => 100,
             "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "description" => nil}}]},
-      %{"id" => -1, "date" => "2014-02-01T00:00:00.000000", "description" => nil, "entries" => [
+      %{"id" => -1, "date" => "2014-02-01T00:00:00.000000Z", "description" => nil, "entries" => [
           %{"id" => -3, "side_id" => 1, "amount" => 300,
             "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil}},
           %{"id" => -4, "side_id" => 2, "amount" => 300,
@@ -59,9 +59,9 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
 
   test "lists limited entries on index with date condition", %{conn: conn} do
     conn = get conn, transaction_path(conn, :index,
-      date_from: "2014-01-01T00:00:00Z", date_to: "2014-01-31T23:59:59")
+      date_from: "2014-01-01T00:00:00Z", date_to: "2014-01-31T23:59:59Z")
     assert json_response(conn, 200)["data"] ==
-      [%{"id" => 0, "date" => "2014-01-01T00:00:00.000000", "description" => nil, "entries" => [
+      [%{"id" => 0, "date" => "2014-01-01T00:00:00.000000Z", "description" => nil, "entries" => [
           %{"id" => -1, "side_id" => 1, "amount" => 100,
             "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil}},
           %{"id" => -2, "side_id" => 2, "amount" => 100,
@@ -71,7 +71,7 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
   test "shows chosen resource", %{conn: conn} do
     conn = get conn, transaction_path(conn, :show, 0)
     assert json_response(conn, 200)["data"] ==
-      %{"id" => 0, "date" => "2014-01-01T00:00:00.000000", "description" => nil, "entries" => [
+      %{"id" => 0, "date" => "2014-01-01T00:00:00.000000Z", "description" => nil, "entries" => [
           %{"id" => -1, "side_id" => 1, "amount" => 100,
             "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil}},
           %{"id" => -2, "side_id" => 2, "amount" => 100,
