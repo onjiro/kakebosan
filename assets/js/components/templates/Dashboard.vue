@@ -6,7 +6,8 @@
   <recent-history v-model="transactions" @selected="openSelectedTransaction"/>
 
   <entry-modal title="登録" ref="entryModal" :items="items"
-               @submitted="onTransactionSubmitted"/>
+               @submitted="onTransactionSubmitted"
+               @deleted="onTransactionDeleted" />
   <new-entry-button-form @click.native="openNewTransaction" />
 </div>
 </template>
@@ -80,6 +81,14 @@ export default {
     onTransactionSubmitted: function(data) {
       this.reload();
       this.notice = '登録が完了しました。'
+      window.setTimeout(() => this.notice = '', 5000);
+    },
+    /**
+     * transactionの削除があった場合の挙動
+     */
+    onTransactionDeleted: function(data) {
+      this.reload();
+      this.notice = '削除が完了しました。'
       window.setTimeout(() => this.notice = '', 5000);
     }
   }

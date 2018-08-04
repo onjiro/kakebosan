@@ -1,6 +1,13 @@
 <template>
 <md-dialog :md-active.sync="isShow" md-fullscreen="false">
-  <md-dialog-title>{{title}}</md-dialog-title>
+  <md-dialog-title>
+    <span>{{title}}</span>
+    <md-button v-if="!isNew" @click="remove"
+               class="md-icon-button md-dense"
+               style="position: absolute; top: 22px; right: 0;">
+      <md-icon>delete</md-icon>
+    </md-button>
+  </md-dialog-title>
 
   <md-datepicker v-model="date" md-immediately />
 
@@ -40,6 +47,11 @@ export default {
     credits: [{item_id: null, amount: null}],
     description: ""
   }),
+  computed: {
+    isNew() {
+      return this.id === null;
+    },
+  },
   methods: {
     /**
      * このモーダルを表示します
@@ -97,6 +109,17 @@ export default {
       ).then((res) => {
         this.close();
         this.$emit('submitted', res.data.data);
+      });
+    },
+    /**
+     * 取引を削除します
+     */
+    remove: function() {
+      if (!window.confirm("この取引を削除しますか？")) return;
+
+      axios.delete(`api/transactions/${this.id}`).then((res) => {
+        this.close();
+        this.$emit('deleted', res.data.data);
       });
     }
   }
