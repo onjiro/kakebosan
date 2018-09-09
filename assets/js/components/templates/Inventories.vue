@@ -32,6 +32,10 @@ export default {
   },
   methods: {
     reload: function() {
+      Promise.all([
+        axios.get('api/inventories/current', {}),
+      ]).then(() => {
+      });
     },
   }
 }

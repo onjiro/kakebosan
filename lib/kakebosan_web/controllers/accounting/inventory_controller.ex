@@ -2,10 +2,19 @@ defmodule KakebosanWeb.Accounting.InventoryController do
   use Kakebosan.Web, :controller
 
   alias KakebosanWeb.Accounting.Inventory
-  plug :load_and_authorize_resource, model: Inventory, preload: [:item, clearance_transaction: [entries: [:item, :side]]]
+  plug :load_and_authorize_resource, model: Inventory, preload: [:item, clearance_transaction: [entries: [:item, :side]]], except: [:current]
   plug :scrub_params, "inventory" when action in [:create, :update]
 
   def index(conn, _params) do
+    accounting_inventories = Repo.all(Inventory)
+    |> Repo.preload(:item)
+    |> Repo.preload(:clearance_transaction)
+    render(conn, "index.json", accounting_inventories: accounting_inventories)
+  end
+
+  # transactionを集計して現在の値を出力する
+  def current(conn, _params) do
+    # todo
     accounting_inventories = Repo.all(Inventory)
     |> Repo.preload(:item)
     |> Repo.preload(:clearance_transaction)
