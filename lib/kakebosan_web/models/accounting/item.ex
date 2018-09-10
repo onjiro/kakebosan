@@ -1,6 +1,7 @@
 defmodule KakebosanWeb.Accounting.Item do
   use Kakebosan.Web, :model
   alias KakebosanWeb.Accounting.Item
+  alias KakebosanWeb.Accounting
 
   schema "accounting_items" do
     field :name, :string
@@ -19,6 +20,22 @@ defmodule KakebosanWeb.Accounting.Item do
     struct
     |> cast(params, [:name, :description, :selectable, :user_id, :type_id])
     |> validate_required([:name])
+  end
+
+  @doc"""
+  Calculate inventory from passed items
+  """
+  def inventories(query) do
+    from item in query,
+      join: type in Accounting.Type, where: type.id == item.type_id,
+      left_join: entry in Accounting.Entry, where: entry.item_id == item.id,
+      left_join: trx in Accounting.Transaction, where: trx.id == entry.transaction_id,
+      group_by: item.id,
+      select: %Accounting.Inventory{ item_id: item.id,
+                                     amount: fragment(" COALESCE(SUM(CASE WHEN ? THEN ? ELSE - ? END), 0)",
+                                       entry.side_id == type.side_id,
+                                       entry.amount,
+                                       entry.amount) }
   end
 
   @doc """
