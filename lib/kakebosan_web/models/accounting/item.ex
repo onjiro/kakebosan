@@ -34,7 +34,7 @@ defmodule KakebosanWeb.Accounting.Item do
       where: trx.date <= ^date,
       group_by: item.id,
       select: %Accounting.Inventory{ item_id: item.id,
-                                     amount: fragment(" COALESCE(SUM(CASE WHEN ? THEN ? ELSE - ? END), 0)",
+                                     amount: fragment("COALESCE(SUM(CASE WHEN ? THEN ? ELSE - ? END), 0)",
                                        entry.side_id == type.side_id,
                                        entry.amount,
                                        entry.amount) }
