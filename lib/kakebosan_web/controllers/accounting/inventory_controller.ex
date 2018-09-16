@@ -16,14 +16,21 @@ defmodule KakebosanWeb.Accounting.InventoryController do
   # transactionを集計して現在の値を出力する
   def current(conn, _params) do
     user = get_session(conn, :current_user)
+    case DateTime.from_iso8601 "#{Date.utc_today |> Date.to_iso8601}T00:00:00Z" do
+      {:ok, today, _offset} ->
+        inventories = Item
+        |> where(user_id: ^user.id)
+        |> Item.inventories(today)
+        |> Repo.all()
+        |> Repo.preload(:item)
+        |> Repo.preload(:clearance_transaction)
+        render(conn, "index.json", accounting_inventories: inventories)
+      {:error, reason} ->
+        conn
+        |> put_status(:internal_server_error)
+        |> render(KakebosanWeb.ErrorView, "error.json", reason: reason)
+    end
 
-    inventories = Item
-    |> where(user_id: ^user.id)
-    |> Item.inventories()
-    |> Repo.all()
-    |> Repo.preload(:item)
-    |> Repo.preload(:clearance_transaction)
-    render(conn, "index.json", accounting_inventories: inventories)
   end
 
   def create(conn, %{"inventory" => inventory_params}) do

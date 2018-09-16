@@ -25,11 +25,13 @@ defmodule KakebosanWeb.Accounting.Item do
   @doc"""
   Calculate inventory from passed items
   """
-  def inventories(query) do
+  @spec inventories(Ecto.Queryable, DateTime) :: EctoQueryable
+  def inventories(query, date) do
     from item in query,
       join: type in Accounting.Type, where: type.id == item.type_id,
       left_join: entry in Accounting.Entry, where: entry.item_id == item.id,
       left_join: trx in Accounting.Transaction, where: trx.id == entry.transaction_id,
+      where: trx.date <= ^date,
       group_by: item.id,
       select: %Accounting.Inventory{ item_id: item.id,
                                      amount: fragment(" COALESCE(SUM(CASE WHEN ? THEN ? ELSE - ? END), 0)",
