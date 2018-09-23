@@ -21,8 +21,9 @@ defmodule KakebosanWeb.Accounting.InventoryController do
         inventories = Item
         |> where(user_id: ^user.id)
         |> Item.inventories(today)
+        |> order_by([:type_id, :id])
         |> Repo.all()
-        |> Repo.preload(:item)
+        |> Repo.preload(item: [:type])
         |> Repo.preload(:clearance_transaction)
         render(conn, "index.json", accounting_inventories: inventories)
       {:error, reason} ->
