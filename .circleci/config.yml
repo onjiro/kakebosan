@@ -2,14 +2,15 @@ version: 2
 jobs:
   build:
     docker:
-      - image: elixir:1.5.2
-      - image: postgres:9.5.9
+      - image: elixir:1.7
+      - image: postgres:11.1-alpine
         environment:
-          POSTGRES_USER: ubuntu
+          POSTGRES_USER: postgres
     steps:
       - checkout
-      - run: mix local.hex --force
-      - run: mix local.rebar
-      - run: mix deps.get
-      - run: mix ecto.create
+      - run: |
+          mix local.hex --force &&
+          mix local.rebar &&
+          mix deps.get &&
+          mix ecto.create
       - run: mix test

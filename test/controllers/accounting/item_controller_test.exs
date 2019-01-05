@@ -37,7 +37,7 @@ defmodule KakebosanWeb.Accounting.ItemControllerTest do
     item = Repo.insert! %Item{name: "test", selectable: true, user_id: 1, type_id: 1}
     conn = get conn, item_path(conn, :show, item)
     assert json_response(conn, 200)["data"] == %{"id" => item.id, "name" => item.name, "type_id" => 1,
-                                                "selectable" => true, "description" => nil }
+                                                 "type" => nil, "selectable" => true, "description" => nil }
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do

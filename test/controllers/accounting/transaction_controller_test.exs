@@ -47,14 +47,14 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
     assert json_response(conn, 200)["data"] ==
       [%{"id" => 0, "date" => "2014-01-01T00:00:00.000000Z", "description" => nil, "entries" => [
           %{"id" => -1, "side_id" => 1, "amount" => 100,
-            "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil}},
+            "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "type" => nil, "description" => nil}},
           %{"id" => -2, "side_id" => 2, "amount" => 100,
-            "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "description" => nil}}]},
+            "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "type" => nil, "description" => nil}}]},
       %{"id" => -1, "date" => "2014-02-01T00:00:00.000000Z", "description" => nil, "entries" => [
           %{"id" => -3, "side_id" => 1, "amount" => 300,
-            "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil}},
+            "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "type" => nil, "description" => nil}},
           %{"id" => -4, "side_id" => 2, "amount" => 300,
-            "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "description" => nil}}]}]
+            "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "type" => nil, "description" => nil}}]}]
   end
 
   test "lists limited entries on index with date condition", %{conn: conn} do
@@ -63,9 +63,9 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
     assert json_response(conn, 200)["data"] ==
       [%{"id" => 0, "date" => "2014-01-01T00:00:00.000000Z", "description" => nil, "entries" => [
           %{"id" => -1, "side_id" => 1, "amount" => 100,
-            "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil}},
+            "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "type" => nil, "description" => nil}},
           %{"id" => -2, "side_id" => 2, "amount" => 100,
-            "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "description" => nil}}]}]
+            "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "type" => nil, "description" => nil}}]}]
   end
 
   test "shows chosen resource", %{conn: conn} do
@@ -73,9 +73,9 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
     assert json_response(conn, 200)["data"] ==
       %{"id" => 0, "date" => "2014-01-01T00:00:00.000000Z", "description" => nil, "entries" => [
           %{"id" => -1, "side_id" => 1, "amount" => 100,
-            "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "description" => nil}},
+            "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "type" => nil, "description" => nil}},
           %{"id" => -2, "side_id" => 2, "amount" => 100,
-            "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "description" => nil}}]}
+            "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "type" => nil, "description" => nil}}]}
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
