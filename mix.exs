@@ -31,21 +31,23 @@ defmodule Kakebosan.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.3.0"},
-     {:phoenix_pubsub, "~> 1.0"},
-     {:phoenix_ecto, "~> 3.3"},
-     {:postgrex, ">= 0.0.0"},
-     {:phoenix_html, "~> 2.10"},
-     {:phoenix_live_reload, "~> 1.1", only: :dev},
-     {:gettext, "~> 0.13"},
-     {:cowboy, "~> 1.0"},
-     {:ueberauth, "~> 0.4"},
+    [{:phoenix, "~> 1.4.0"},
+     {:phoenix_pubsub, "~> 1.1"},
+     {:ecto_sql, "~> 3.0"},
+     {:phoenix_ecto, "~> 4.0"},
+     {:postgrex, ">= 0.14.1"},
+     {:phoenix_html, "~> 2.13"},
+     {:phoenix_live_reload, "~> 1.2", only: :dev},
+     {:gettext, "~> 0.16"},
+     {:plug_cowboy, "~> 2.0"},
+     {:plug, "~> 1.7"},
+     {:ueberauth, "~> 0.5"},
      {:ueberauth_identity, "~> 0.2"},
-     {:ueberauth_github, "~> 0.5"},
+     {:ueberauth_github, "~> 0.7"},
      {:ueberauth_twitter, "~> 0.2"},
      {:oauth, github: "tim/erlang-oauth"}, # required by ueberauth_twitter
-     {:canary, "~> 1.0.0"},
-     {:mix_test_watch, "~> 0.3", only: :dev},
+     {:canary, "~> 1.1.1"},
+     {:mix_test_watch, "~> 0.9", only: :dev},
     ]
   end
 
