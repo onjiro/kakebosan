@@ -5,7 +5,7 @@ jobs:
       - image: elixir:1.7
       - image: postgres:11.1-alpine
         environment:
-          POSTGRES_USER: ubuntu
+          POSTGRES_USER: postgres
     steps:
       - checkout
       - run: |
