@@ -1,8 +1,9 @@
 defmodule KakebosanWeb.Accounting.InventoryController do
   use Kakebosan.Web, :controller
 
+  alias KakebosanWeb.Accounting.Item
   alias KakebosanWeb.Accounting.Inventory
-  plug :load_and_authorize_resource, model: Inventory, preload: [:item, clearance_transaction: [entries: [:item, :side]]]
+  plug :load_and_authorize_resource, model: Inventory, preload: [:item, clearance_transaction: [entries: [:item, :side]]], only: [:show, :update, :delete]
   plug :scrub_params, "inventory" when action in [:create, :update]
 
   def index(conn, _params) do
@@ -10,6 +11,27 @@ defmodule KakebosanWeb.Accounting.InventoryController do
     |> Repo.preload(:item)
     |> Repo.preload(:clearance_transaction)
     render(conn, "index.json", accounting_inventories: accounting_inventories)
+  end
+
+  # transactionを集計して現在の値を出力する
+  def current(conn, _params) do
+    user = get_session(conn, :current_user)
+    case DateTime.from_iso8601 "#{Date.utc_today |> Date.to_iso8601}T00:00:00Z" do
+      {:ok, today, _offset} ->
+        inventories = Item
+        |> where(user_id: ^user.id)
+        |> Item.inventories(today)
+        |> order_by([:type_id, :id])
+        |> Repo.all()
+        |> Repo.preload(item: [:type])
+        |> Repo.preload(:clearance_transaction)
+        render(conn, "index.json", accounting_inventories: inventories)
+      {:error, reason} ->
+        conn
+        |> put_status(:internal_server_error)
+        |> render(KakebosanWeb.ErrorView, "error.json", reason: reason)
+    end
+
   end
 
   def create(conn, %{"inventory" => inventory_params}) do

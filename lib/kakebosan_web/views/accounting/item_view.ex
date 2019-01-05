@@ -14,6 +14,11 @@ defmodule KakebosanWeb.Accounting.ItemView do
       name: item.name,
       selectable: item.selectable,
       type_id: item.type_id,
-      description: item.description}
+      description: item.description,
+      type: case Ecto.assoc_loaded?(item.type) do
+              true -> render_one(item.type, KakebosanWeb.Accounting.TypeView, "type.json")
+              false -> nil
+            end
+    }
   end
 end

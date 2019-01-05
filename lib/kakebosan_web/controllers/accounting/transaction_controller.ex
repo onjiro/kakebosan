@@ -42,8 +42,7 @@ defmodule KakebosanWeb.Accounting.TransactionController do
 
     transaction = Transaction.changeset(%Transaction{}, Map.merge(transaction_params, %{"user_id" => user.id}))
     entries = for e <- transaction_params["entries"] || [] do
-      item = Repo.get!(Item, e["item"]["id"])
-      Entry.changeset(%Entry{}, Map.merge(e, %{"user_id" => user.id, "item_id" => item.id}))
+      Entry.changeset(%Entry{}, Map.merge(e, %{"user_id" => user.id }))
     end
     changeset = Ecto.Changeset.put_assoc(transaction, :entries, entries)
 
@@ -78,7 +77,7 @@ defmodule KakebosanWeb.Accounting.TransactionController do
       conn.assigns.transaction
       |> Transaction.changeset(transaction_params)
       |> Ecto.Changeset.put_assoc(:entries, for e <- transaction_params["entries"] || [] do
-                                               item = Repo.get!(Item, e["item"]["id"])
+                                               item = Repo.get!(Item, e["item_id"])
                                                Entry.changeset(%Entry{}, Map.merge(e, %{"user_id" => user.id, "item_id" => item.id}))
                                              end)
 

@@ -34,6 +34,7 @@ defmodule KakebosanWeb.Router do
     pipe_through :api
     resources "/items", Accounting.ItemController
     resources "/transactions", Accounting.TransactionController
+    get "/inventories/current", Accounting.InventoryController, :current
     resources "/inventories", Accounting.InventoryController
   end
 
