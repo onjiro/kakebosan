@@ -34,7 +34,7 @@ defmodule Kakebosan.Web do
       import Ecto
       import Ecto.Query
 
-      import KakebosanWeb.Router.Helpers
+      alias KakebosanWeb.Router.Helpers, as: Routes
       import KakebosanWeb.Gettext
       import Canary.Plugs
     end
@@ -50,7 +50,7 @@ defmodule Kakebosan.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import KakebosanWeb.Router.Helpers
+      alias KakebosanWeb.Router.Helpers, as: Routes
       import KakebosanWeb.ErrorHelpers
       import KakebosanWeb.Gettext
     end

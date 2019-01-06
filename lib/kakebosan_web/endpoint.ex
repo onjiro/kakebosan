@@ -1,7 +1,9 @@
 defmodule KakebosanWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :kakebosan
 
-  socket "/socket", KakebosanWeb.UserSocket
+  socket "/socket", KakebosanWeb.UserSocket,
+    websocket: true # or list of options
+  # longpoll: [check_origin: ...]
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -25,7 +27,7 @@ defmodule KakebosanWeb.Endpoint do
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
-    json_decoder: Poison
+    json_decoder: Jason
 
   plug Plug.MethodOverride
   plug Plug.Head

@@ -22,12 +22,13 @@ defmodule KakebosanWeb.Accounting.ItemController do
       {:ok, item} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", item_path(conn, :show, item))
+        |> put_resp_header("location", Routes.item_path(conn, :show, item))
         |> render("show.json", item: item)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(KakebosanWeb.ChangesetView, "error.json", changeset: changeset)
+        |> put_view(KakebosanWeb.ChangesetView)
+        |> render("error.json", changeset: changeset)
     end
   end
 
@@ -36,7 +37,8 @@ defmodule KakebosanWeb.Accounting.ItemController do
       nil ->
         conn
         |> put_status(404)
-        |> render(KakebosanWeb.ErrorView, "404.json")
+        |> put_view(KakebosanWeb.ErrorView)
+        |> render("404.json")
       _ ->
         render(conn, "show.json", item: conn.assigns.item)
     end
@@ -52,7 +54,8 @@ defmodule KakebosanWeb.Accounting.ItemController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(KakebosanWeb.ChangesetView, "error.json", changeset: changeset)
+        |> put_view(KakebosanWeb.ChangesetView)
+        |> render("error.json", changeset: changeset)
     end
   end
 

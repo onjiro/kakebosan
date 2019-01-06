@@ -50,12 +50,13 @@ defmodule KakebosanWeb.Accounting.TransactionController do
       {:ok, transaction} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", transaction_path(conn, :show, transaction))
+        |> put_resp_header("location", Routes.transaction_path(conn, :show, transaction))
         |> render("show.json", transaction: Repo.preload(transaction, entries: [:side, :item]))
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(KakebosanWeb.ChangesetView, "error.json", changeset: changeset)
+        |> put_view(KakebosanWeb.ChangesetView)
+        |> render("error.json", changeset: changeset)
     end
   end
 
@@ -64,7 +65,8 @@ defmodule KakebosanWeb.Accounting.TransactionController do
       nil ->
         conn
         |> put_status(404)
-        |> render(KakebosanWeb.ErrorView, "404.json")
+        |> put_view(KakebosanWeb.ErrorView)
+        |> render("404.json")
       _ ->
         render(conn, "show.json", transaction: conn.assigns.transaction)
     end
@@ -87,7 +89,8 @@ defmodule KakebosanWeb.Accounting.TransactionController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(KakebosanWeb.ChangesetView, "error.json", changeset: changeset)
+        |> put_view(KakebosanWeb.ChangesetView)
+        |> render("error.json", changeset: changeset)
     end
   end
 

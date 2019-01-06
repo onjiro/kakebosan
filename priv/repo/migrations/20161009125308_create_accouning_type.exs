@@ -5,7 +5,7 @@ defmodule Kakebosan.Repo.Migrations.CreateAccouning.Type do
     create table(:accounting_types) do
       add :name, :string, null: false
       add :side_id, references(:accounting_sides, on_delete: :nothing), null: false
-      add :deleted_at, :datetime
+      add :deleted_at, :utc_datetime
 
       timestamps()
     end

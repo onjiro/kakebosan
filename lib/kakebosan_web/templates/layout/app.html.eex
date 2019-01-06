@@ -8,14 +8,14 @@
         <meta name="author" content="">
         <title>家計簿さん</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
-        <link rel="stylesheet" href="<%= static_path(@conn, ~s(/css/app.css)) %>">
+        <link rel="stylesheet" href="<%= Routes.static_path(@conn, ~s(/css/app.css)) %>">
     </head>
 
     <body>
       <div id="root">
         <%= render @view_module, @view_template, assigns %>
       </div>
-      <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+      <script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     </body>
 
 </html>

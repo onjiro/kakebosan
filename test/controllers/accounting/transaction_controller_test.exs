@@ -45,12 +45,12 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, transaction_path(conn, :index)
     assert json_response(conn, 200)["data"] ==
-      [%{"id" => 0, "date" => "2014-01-01T00:00:00.000000Z", "description" => nil, "entries" => [
+      [%{"id" => 0, "date" => "2014-01-01T00:00:00Z", "description" => nil, "entries" => [
           %{"id" => -1, "side_id" => 1, "amount" => 100,
             "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "type" => nil, "description" => nil}},
           %{"id" => -2, "side_id" => 2, "amount" => 100,
             "item" => %{"id" => 2, "name" => "食費", "selectable" => true, "type_id" => 2, "type" => nil, "description" => nil}}]},
-      %{"id" => -1, "date" => "2014-02-01T00:00:00.000000Z", "description" => nil, "entries" => [
+      %{"id" => -1, "date" => "2014-02-01T00:00:00Z", "description" => nil, "entries" => [
           %{"id" => -3, "side_id" => 1, "amount" => 300,
             "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "type" => nil, "description" => nil}},
           %{"id" => -4, "side_id" => 2, "amount" => 300,
@@ -61,7 +61,7 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
     conn = get conn, transaction_path(conn, :index,
       date_from: "2014-01-01T00:00:00Z", date_to: "2014-01-31T23:59:59Z")
     assert json_response(conn, 200)["data"] ==
-      [%{"id" => 0, "date" => "2014-01-01T00:00:00.000000Z", "description" => nil, "entries" => [
+      [%{"id" => 0, "date" => "2014-01-01T00:00:00Z", "description" => nil, "entries" => [
           %{"id" => -1, "side_id" => 1, "amount" => 100,
             "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "type" => nil, "description" => nil}},
           %{"id" => -2, "side_id" => 2, "amount" => 100,
@@ -71,7 +71,7 @@ defmodule KakebosanWeb.Accounting.TransactionControllerTest do
   test "shows chosen resource", %{conn: conn} do
     conn = get conn, transaction_path(conn, :show, 0)
     assert json_response(conn, 200)["data"] ==
-      %{"id" => 0, "date" => "2014-01-01T00:00:00.000000Z", "description" => nil, "entries" => [
+      %{"id" => 0, "date" => "2014-01-01T00:00:00Z", "description" => nil, "entries" => [
           %{"id" => -1, "side_id" => 1, "amount" => 100,
             "item" => %{"id" => 1, "name" => "現金", "selectable" => true, "type_id" => 1, "type" => nil, "description" => nil}},
           %{"id" => -2, "side_id" => 2, "amount" => 100,
