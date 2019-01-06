@@ -29,7 +29,8 @@ defmodule KakebosanWeb.Accounting.InventoryController do
       {:error, reason} ->
         conn
         |> put_status(:internal_server_error)
-        |> render(KakebosanWeb.ErrorView, "error.json", reason: reason)
+        |> put_view(KakebosanWeb.ErrorView)
+        |> render("error.json", reason: reason)
     end
 
   end
@@ -46,7 +47,8 @@ defmodule KakebosanWeb.Accounting.InventoryController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(KakebosanWeb.ChangesetView, "error.json", changeset: changeset)
+        |> put_view(KakebosanWeb.ChangesetView)
+        |> render("error.json", changeset: changeset)
     end
   end
 
@@ -66,7 +68,8 @@ defmodule KakebosanWeb.Accounting.InventoryController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(KakebosanWeb.ChangesetView, "error.json", changeset: changeset)
+        |> put_view(KakebosanWeb.ChangesetView)
+        |> render("error.json", changeset: changeset)
     end
   end
 
