@@ -50,7 +50,7 @@ defmodule KakebosanWeb.Accounting.TransactionController do
       {:ok, transaction} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", transaction_path(conn, :show, transaction))
+        |> put_resp_header("location", Routes.transaction_path(conn, :show, transaction))
         |> render("show.json", transaction: Repo.preload(transaction, entries: [:side, :item]))
       {:error, changeset} ->
         conn

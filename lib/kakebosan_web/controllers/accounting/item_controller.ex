@@ -22,7 +22,7 @@ defmodule KakebosanWeb.Accounting.ItemController do
       {:ok, item} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", item_path(conn, :show, item))
+        |> put_resp_header("location", Routes.item_path(conn, :show, item))
         |> render("show.json", item: item)
       {:error, changeset} ->
         conn

@@ -41,7 +41,7 @@ defmodule KakebosanWeb.Accounting.InventoryController do
       {:ok, inventory} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", inventory_path(conn, :show, inventory))
+        |> put_resp_header("location", Routes.inventory_path(conn, :show, inventory))
         |> render("show.json", inventory: inventory |> Repo.preload(:item) |> Repo.preload(clearance_transaction: [entries: [:item, :side]]))
       {:error, changeset} ->
         conn
