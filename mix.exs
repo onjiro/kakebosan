@@ -20,7 +20,7 @@ defmodule Kakebosan.Mixfile do
     [mod: {Kakebosan.Application, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
                     :phoenix_ecto, :postgrex,
-                    :ueberauth, :ueberauth_identity, :ueberauth_github, :ueberauth_twitter]]
+                    :ueberauth, :ueberauth_identity, :ueberauth_github]]
   end
 
   # Specifies which paths to compile per environment.
@@ -44,8 +44,6 @@ defmodule Kakebosan.Mixfile do
      {:ueberauth, "~> 0.5"},
      {:ueberauth_identity, "~> 0.2"},
      {:ueberauth_github, "~> 0.7"},
-     {:ueberauth_twitter, "~> 0.2"},
-     {:oauth, github: "tim/erlang-oauth"}, # required by ueberauth_twitter
      {:canary, "~> 1.1.1"},
      {:mix_test_watch, "~> 0.9", only: :dev},
      {:jason, "~> 1.0"},

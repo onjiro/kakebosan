@@ -33,7 +33,6 @@ import_config "#{Mix.env}.exs"
 config :ueberauth, Ueberauth,
 providers: [
   github: { Ueberauth.Strategy.Github, [] },
-  twitter: { Ueberauth.Strategy.Twitter, [] },
   identity: {Ueberauth.Strategy.Identity, [
                 callback_methods: ["POST"],
                 uid_field: :username,
@@ -43,11 +42,6 @@ providers: [
 config :ueberauth, Ueberauth.Strategy.Github.OAuth,
 client_id: System.get_env("GITHUB_CLIENT_ID"),
 client_secret: System.get_env("GITHUB_CLIENT_SECRET")
-
-# twitter auth strategy
-config :ueberauth, Ueberauth.Strategy.Twitter.OAuth,
-consumer_key: System.get_env("TWITTER_CONSUMER_KEY"),
-consumer_secret: System.get_env("TWITTER_CONSUMER_SECRET")
 
 # canary setting
 config :canary, repo: Kakebosan.Repo
