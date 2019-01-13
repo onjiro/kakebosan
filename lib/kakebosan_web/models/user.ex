@@ -33,12 +33,6 @@ defmodule KakebosanWeb.User do
                           image_url: info.image || "", email: info.email || ""})
     |> create_new_user
   end
-  def create_with_ueberauth(%{provider: :twitter, info: info, uid: uid} = auth) do
-    Logger.info("create_with_ueberauth #{inspect auth}")
-    changeset(%User{}, %{ provider: "twitter", uid: uid, name: info.name, access_token: "",
-                          image_url: info.image || "", email: info.email || ""})
-    |> create_new_user
-  end
   def create_with_ueberauth(%{provider: provider, info: info, uid: uid} = auth) do
     Logger.info("create_with_ueberauth #{inspect auth}")
     changeset(%User{}, %{ provider: Atom.to_string(provider), uid: uid, name: info.name, access_token: "",
