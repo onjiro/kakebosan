@@ -23,6 +23,11 @@ defmodule Kakebosan.Mixfile do
                     :ueberauth, :ueberauth_identity, :ueberauth_github]]
   end
 
+  # dotenv setting
+  defp app_list(:dev), do: [:dotenv | app_list]
+  defp app_list(_), do: app_list
+  defp app_list, do: [...]
+
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_),     do: ["lib"]
@@ -47,6 +52,7 @@ defmodule Kakebosan.Mixfile do
      {:canary, "~> 1.1.1"},
      {:mix_test_watch, "~> 0.9", only: :dev},
      {:jason, "~> 1.0"},
+     {:dotenv, "~> 3.0.0"},
     ]
   end
 

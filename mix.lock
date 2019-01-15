@@ -7,6 +7,7 @@
   "cowlib": {:hex, :cowlib, "2.7.0", "3ef16e77562f9855a2605900cedb15c1462d76fb1be6a32fc3ae91973ee543d2", [:rebar3], []},
   "db_connection": {:hex, :db_connection, "2.0.3", "b4e8aa43c100e16f122ccd6798cd51c48c79fd391c39d411f42b3cd765daccb0", [:mix], [{:connection, "~> 1.0.2", [hex: :connection, optional: false]}]},
   "decimal": {:hex, :decimal, "1.6.0", "bfd84d90ff966e1f5d4370bdd3943432d8f65f07d3bab48001aebd7030590dcc", [:mix], []},
+  "dotenv": {:hex, :dotenv, "3.0.0", "52a28976955070d8312a81d59105b57ecf5d6a755c728b49c70a7e2120e6cb40", [:mix], []},
   "ecto": {:hex, :ecto, "3.0.6", "d33ab5b3f7553a41507d4b0ad5bf192d533119c4ad08f3a5d63d85aa12117dc9", [:mix], [{:decimal, "~> 1.6", [hex: :decimal, optional: false]}, {:jason, "~> 1.0", [hex: :jason, optional: true]}, {:poison, "~> 2.2 or ~> 3.0", [hex: :poison, optional: true]}]},
   "ecto_sql": {:hex, :ecto_sql, "3.0.4", "e7a0feb0b2484b90981c56d5cd03c52122c1c31ded0b95ed213b7c5c07ae6737", [:mix], [{:db_connection, "~> 2.0", [hex: :db_connection, optional: false]}, {:ecto, "~> 3.0.6", [hex: :ecto, optional: false]}, {:mariaex, "~> 0.9.1", [hex: :mariaex, optional: true]}, {:postgrex, "~> 0.14.0", [hex: :postgrex, optional: true]}, {:telemetry, "~> 0.3.0", [hex: :telemetry, optional: false]}]},
   "file_system": {:hex, :file_system, "0.2.6", "fd4dc3af89b9ab1dc8ccbcc214a0e60c41f34be251d9307920748a14bf41f1d3", [:mix], []},
