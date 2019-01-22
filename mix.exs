@@ -47,6 +47,7 @@ defmodule Kakebosan.Mixfile do
      {:canary, "~> 1.1.1"},
      {:mix_test_watch, "~> 0.9", only: :dev},
      {:jason, "~> 1.0"},
+     {:poison, "~> 3.1.0"},
     ]
   end
 
