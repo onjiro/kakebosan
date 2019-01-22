@@ -72,6 +72,11 @@ defmodule KakebosanWeb.AuthController do
   end
   defp validate_pass(_), do: {:error, "Password Required"}
 
+  # ueberauth_github では uid が number で渡される
+  # アプリ上で保存される型は string のため変換する。
+  defp get_or_create_user(%{ uid: uid } = auth) when is_number(uid),
+    do: get_or_create_user(auth |> Map.merge(%{ uid: Integer.to_string(uid) }))
+
   defp get_or_create_user(%{ uid: uid, provider: provider } = auth) do
     Repo.get_by(User, uid: uid, provider: Atom.to_string(provider)) || User.create_with_ueberauth(auth)
   end
