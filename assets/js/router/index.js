@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import Dashboard from '@/components/templates/Dashboard';
+import Histories from '@/components/templates/Histories';
 import Inventories from '@/components/templates/Inventories';
 
 Vue.use(Router);
@@ -10,8 +10,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'dashboard',
-      component: Dashboard,
+      name: 'histories',
+      component: Histories,
     },
     {
       path: '/inventories',

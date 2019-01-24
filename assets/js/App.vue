@@ -3,7 +3,7 @@
   <router-view/>
   <div class="spacer"></div>
   <md-bottom-bar md-sync-route>
-    <md-bottom-bar-item to="/" md-label="Home" md-icon="home"></md-bottom-bar-item>
+    <md-bottom-bar-item to="/" md-label="履歴" md-icon="list"></md-bottom-bar-item>
     <md-bottom-bar-item to="/inventories" md-label="棚卸" md-icon="assignment_turned_in"></md-bottom-bar-item>
   </md-bottom-bar>
 </div>
