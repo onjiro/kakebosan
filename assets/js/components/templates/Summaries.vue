@@ -4,25 +4,8 @@
   
   {{ notice }}
   
-  <div>
-    <span>集計期間</span>
-    <input type="date"/>
-    <span>〜</span>
-    <input type="date"/>
-  </div>
-  
-  <div>
-    <md-subheader>yyyy/MM/dd 〜 yyyy/MM/dd</md-subheader>
-    <md-table>
-      <md-table-row>
-        <md-table-head>科目名</md-table-head>
-        <md-table-head>分類</md-table-head>
-        <md-table-head>借方</md-table-head>
-        <md-table-head>貸方</md-table-head>
-        <md-table-head>増減</md-table-head>
-      </md-table-row>
-  </md-table>
-  </div>
+  <summarize-period-form />
+  <summary-results />
 </div>
 </template>
 
@@ -33,10 +16,14 @@
 import moment from "moment";
 import axios from "axios";
 import _ from "lodash";
+import SummarizePeriodForm from '../organisms/SummarizePeriodForm'
+import SummaryResults from '../organisms/SummaryResults'
 
 export default {
   name: 'Summaries',
   components: {
+    SummarizePeriodForm,
+    SummaryResults
   },
   data: function() {
     return {
