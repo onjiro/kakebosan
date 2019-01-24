@@ -2,10 +2,7 @@
 <div id="app">
   <router-view/>
   <div class="spacer"></div>
-  <md-bottom-bar md-sync-route>
-    <md-bottom-bar-item to="/" md-label="履歴" md-icon="list"></md-bottom-bar-item>
-    <md-bottom-bar-item to="/inventories" md-label="棚卸" md-icon="assignment_turned_in"></md-bottom-bar-item>
-  </md-bottom-bar>
+  <bottom-nav />
 </div>
 </template>
 
@@ -15,6 +12,7 @@ import VueMoment from 'vue-moment';
 import { MdButton, MdField, MdContent, MdDatepicker, MdTable, MdSubheader, MdToolbar, MdDialog, MdBottomBar } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
+import BottomNav from './components/organisms/BottomNav'
 
 Vue.use(VueMoment);
 Vue.use(MdButton);
@@ -28,7 +26,10 @@ Vue.use(MdDialog);
 Vue.use(MdBottomBar);
 
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    BottomNav
+  }
 }
 </script>
 
@@ -43,9 +44,5 @@ export default {
 }
 .spacer {
     height: 100px;
-}
-.md-bottom-bar {
-    position: fixed;
-    bottom: 0;
 }
 </style>
