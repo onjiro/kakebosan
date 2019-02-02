@@ -4,8 +4,8 @@
   
   {{ notice }}
   
-  <summarize-period-form />
-  <summary-results />
+  <summarize-period-form v-model="period" @change="onPeriodChange"/>
+  <summary-results v-model="summaries"/>
 </div>
 </template>
 
@@ -38,6 +38,9 @@ export default {
     this.reload();
   },
   methods: {
+    onPeriodChange() {
+      this.reload();
+    },
     reload() {
       Promise.all([
         axios.get('api/summaries', {
