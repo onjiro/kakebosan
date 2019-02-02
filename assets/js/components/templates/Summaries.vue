@@ -27,11 +27,29 @@ export default {
   },
   data: function() {
     return {
+      period: [
+        moment().subtract(1, 'month').startOf('day').toDate(),
+        moment().startOf('day').toDate()
+      ],
+      summaries: [],
     }
   },
   created: function() {
+    this.reload();
   },
   methods: {
+    reload() {
+      Promise.all([
+        axios.get('api/summaries', {
+          params: {
+            fromDate: this.period[0].toISOString(),
+            toDate: this.period[1].toISOString(),
+          }
+        }),
+      ]).then(([{ data: { data: summaries }}]) => {
+        this.data = summaries;
+      });
+    }
   }
 }
 </script>
