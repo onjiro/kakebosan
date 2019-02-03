@@ -4,8 +4,13 @@
   
   {{ notice }}
   
-  <inventory-opposite-item-settings />
-  <accounting-item-settings />
+  <inventory-opposite-item-settings
+    v-model="inventoryOppositeItemIds"
+    :items="items" />
+
+  <accounting-item-settings
+    v-model="items" />
+
 </div>
 </template>
 
@@ -25,13 +30,37 @@ export default {
     InventoryOppositeItemSettings,
     AccountingItemSettings,
   },
-  data: function() {
+  data() {
     return {
+      // 勘定科目一覧
+      items: [],
+      // 棚卸時反対科目
+      inventoryOppositeItemIds: {
+        debit_item_id: null,
+        credit_item_id: null,
+      },
     }
   },
-  created: function() {
+  created() {
+    this.reload();
   },
   methods: {
+    reload() {
+      Promise.all([
+        axios.get('api/items'),
+        axios.get('api/inventory_setting'),
+      ]).then(([
+        { data: { data: items }},
+        { data: { debit_item_id, credit_item_id } }
+      ]) => {
+        this.items = items;
+        this.inventoryOppositeItemIds = {
+          debit_item_id,
+          credit_item_id,
+        }
+      });
+
+    }
   }
 }
 </script>
