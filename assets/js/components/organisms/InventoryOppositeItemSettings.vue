@@ -2,9 +2,13 @@
 <div>
   <md-subheader>棚卸反対科目</md-subheader>
   <span>貸方増大時</span>
-  <select></select>
+  <select v-model="value.credit_item_id" @change="onChange($event, 'credit')">
+    <option v-for="item in items" :value="item.id">{{item.name}}</option>
+  </select>
   <span>借方増大時</span>
-  <select></select>
+  <select v-model="value.debit_item_id" @change="onChange($event, 'debit')">
+    <option v-for="item in items" :value="item.id">{{item.name}}</option>
+  </select>
 </div>
 </template>
 
@@ -20,13 +24,20 @@ export default {
   name: 'InventoryOppositeItemSettings',
   components: {
   },
+  props: {
+    value: Object, // { debit_item_id, credit_item_id }
+    items: Array, // [{ id, name, type, type_id, description, selectable }, ...]
+  },
   data: function() {
     return {
     }
   },
-  created: function() {
-  },
   methods: {
+    onChange(e, side) {
+      this.$emit('change', (side === "debit") ?
+                 { ...this.value, debit_item_id: e.target.value } :
+                 { ...this.value, credit_item_id: e.target.value });
+    }
   }
 }
 </script>

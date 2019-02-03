@@ -6,7 +6,8 @@
   
   <inventory-opposite-item-settings
     v-model="inventoryOppositeItemIds"
-    :items="items" />
+    :items="items"
+    @change="onChangeInventoryOppositeItemSettings" />
 
   <accounting-item-settings
     v-model="items" />
@@ -45,6 +46,10 @@ export default {
     this.reload();
   },
   methods: {
+    onChangeInventoryOppositeItemSettings(payload) {
+      // TODO
+      console.log(payload);
+    },
     reload() {
       Promise.all([
         axios.get('api/items'),
