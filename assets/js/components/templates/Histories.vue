@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="md-title">ダッシュボード</div>
+  <div class="md-title">履歴</div>
 
   {{ notice }}
   <recent-history v-model="transactions" @selected="openSelectedTransaction"/>
@@ -28,7 +28,7 @@ import RecentHistory from '@/components/templates/RecentHistory';
 import EntryModal from '@/components/templates/EntryModal';
 
 export default {
-  name: 'DashBoard',
+  name: 'Histories',
   components: {
     NewEntryButtonForm,
     RecentHistory,
