@@ -1,15 +1,23 @@
 <template>
-<div>
-  <md-subheader>棚卸反対科目</md-subheader>
-  <span>貸方増大時</span>
-  <select v-model="value.credit_item_id" @change="onChange($event, 'credit')">
-    <option v-for="item in items" :value="item.id">{{item.name}}</option>
-  </select>
-  <span>借方増大時</span>
-  <select v-model="value.debit_item_id" @change="onChange($event, 'debit')">
-    <option v-for="item in items" :value="item.id">{{item.name}}</option>
-  </select>
-</div>
+<md-card>
+  <md-card-header>棚卸反対科目</md-card-header>
+  <md-card-content>
+    <div class="md-layout">
+      <md-field class="md-layout-item">
+        <label>貸方増大時</label>
+        <md-select v-model="value.credit_item_id" @change="onChange($event, 'credit')">
+          <md-option v-for="item in items" :value="item.id">{{item.name}}</md-option>
+        </md-select>
+      </md-field>
+      <md-field class="md-layout-item">
+        <label>借方増大時</label>
+        <md-select v-model="value.debit_item_id" @change="onChange($event, 'debit')">
+          <md-option v-for="item in items" :value="item.id">{{item.name}}</md-option>
+        </md-select>
+      </md-field>
+    </div>
+  </md-card-content>
+</md-card>
 </template>
 
 <style scoped>
