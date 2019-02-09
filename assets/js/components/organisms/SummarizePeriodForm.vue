@@ -1,10 +1,19 @@
 <template>
-<div>
-  <span>集計期間</span>
-  <input type="date" :value="period[0]" @change="onChange($event, 0)"/>
-  <span>〜</span>
-  <input type="date" :value="period[1]" @change="onChange($event, 1)"/>
-</div>
+  <md-content>
+    <md-sub-header>集計期間</md-sub-header>
+    <div class="md-layout">
+      <span class="md-layout-item">
+        <md-datepicker :value="period[0]" @change="onChange($event, 0)" md-immediately>
+          <label>From</label>
+        </md-datepicker>
+      </span>
+      <span class="md-layout-item">
+        <md-datepicker :value="period[1]" @change="onChange($event, 1)" md-immediately>
+          <label>To</label>
+        </md-datepicker>
+      </span>
+    </div>
+  </md-content>
 </template>
 
 <style scoped>
