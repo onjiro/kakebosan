@@ -5,7 +5,10 @@
   {{ notice }}
   
   <summarize-period-form v-model="period" @change="onPeriodChange"/>
-  <summary-results v-model="summaries"/>
+  <div>
+    <md-subheader>{{periodDisplayFormat[0]}} 〜 {{periodDisplayFormat[1]}}</md-subheader>
+    <summary-results v-model="summaries"/>
+  </div>
 </div>
 </template>
 
@@ -36,6 +39,11 @@ export default {
   },
   created: function() {
     this.reload();
+  },
+  computed: {
+    periodDisplayFormat() {
+      return this.period && this.period.map((date) => moment(date).format("YYYY/MM/DD"))
+    }
   },
   methods: {
     onPeriodChange() {

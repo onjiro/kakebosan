@@ -1,6 +1,5 @@
 <template>
 <div>
-  <md-subheader>yyyy/MM/dd 〜 yyyy/MM/dd</md-subheader>
   <md-table>
     <md-table-row>
       <md-table-head>科目名</md-table-head>
@@ -30,15 +29,8 @@ import _ from "lodash";
 
 export default {
   name: 'SummaryResults',
-  components: {
-  },
-  data: function() {
-    return {
-    }
-  },
-  created: function() {
-  },
-  methods: {
+  props: {
+    value: Array
   }
 }
 </script>
