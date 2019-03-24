@@ -2,7 +2,7 @@ defmodule KakebosanWeb.Accounting.ItemController do
   use Kakebosan.Web, :controller
 
   alias KakebosanWeb.Accounting.Item
-  plug :load_and_authorize_resource, model: Item
+  plug :load_and_authorize_resource, model: Item, only: [:show, :update, :delete]
   plug :scrub_params, "item" when action in [:create, :update]
 
   def index(conn, _params) do
@@ -13,6 +13,15 @@ defmodule KakebosanWeb.Accounting.ItemController do
       order_by: [i.id]
     )
     render(conn, "index.json", items: items)
+  end
+
+  def summary(conn, %{"fromDate" => date_from, "toDate" => date_to }) do
+    user = get_session(conn, :current_user)
+    summaries = Item
+    |> where(user_id: ^user.id)
+    |> Item.summaries(date_from, date_to)
+    |> Repo.all()
+    render(conn, "summaries.json", items: summaries)
   end
 
   def create(conn, %{"item" => item_params}) do

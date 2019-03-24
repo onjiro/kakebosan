@@ -32,6 +32,7 @@ defmodule KakebosanWeb.Router do
 
   scope "/api", KakebosanWeb do
     pipe_through :api
+    get "/items/summary", Accounting.ItemController, :summary
     resources "/items", Accounting.ItemController
     resources "/transactions", Accounting.TransactionController
     get "/inventories/current", Accounting.InventoryController, :current
