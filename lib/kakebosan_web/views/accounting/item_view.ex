@@ -26,16 +26,19 @@ defmodule KakebosanWeb.Accounting.ItemView do
     }
   end
 
-  def render("summary.json", %{item: item}) do
+  def render("summary.json", %{item: summary = %{item: item}}) do
     %{id: item.id,
       name: item.name,
       selectable: item.selectable,
       type_id: item.type_id,
-      side_id: item.side_id,
       description: item.description,
-      debit_amount: item.debit_amount,
-      credit_amount: item.credit_amount,
-      amount_grow: item.amount_grow,
+      debit_amount: summary.debit_amount,
+      credit_amount: summary.credit_amount,
+      amount_grow: summary.amount_grow,
+      type: case Ecto.assoc_loaded?(item.type) do
+              true -> render_one(item.type, KakebosanWeb.Accounting.TypeView, "type.json")
+              false -> nil
+            end
     }
   end
 end

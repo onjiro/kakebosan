@@ -58,7 +58,7 @@ export default {
           }
         }),
       ]).then(([{ data: { data: summaries }}]) => {
-        this.data = summaries;
+        this.summaries = summaries;
       });
     }
   }
