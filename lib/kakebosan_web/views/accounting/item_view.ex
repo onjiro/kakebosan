@@ -35,7 +35,7 @@ defmodule KakebosanWeb.Accounting.ItemView do
       description: item.description,
       debit_amount: item.debit_amount,
       credit_amount: item.credit_amount,
-      amount_diff: item.amount_diff,
+      amount_grow: item.amount_grow,
     }
   end
 end

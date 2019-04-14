@@ -65,10 +65,10 @@ defmodule KakebosanWeb.Accounting.Item do
                  credit_amount: fragment("COALESCE(SUM(CASE WHEN ? THEN ? ELSE 0 END), 0)",
                    side.name == "貸方",
                    entry.amount),
-                 amount: fragment("COALESCE(SUM(CASE WHEN ? THEN ? ELSE - ? END), 0)",
+                 amount_grow: fragment("COALESCE(SUM(CASE WHEN ? THEN ? ELSE ? END), 0)",
                    entry.side_id == type.side_id,
                    entry.amount,
-                   entry.amount) }
+                   entry.amount * -1) }
   end
 
   @doc """
