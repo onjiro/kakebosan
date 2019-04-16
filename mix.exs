@@ -19,7 +19,7 @@ defmodule Kakebosan.Mixfile do
   def application do
     [mod: {Kakebosan.Application, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex,
+                    :ecto_sql, :phoenix_ecto, :postgrex,
                     :ueberauth, :ueberauth_identity, :ueberauth_github]]
   end
 

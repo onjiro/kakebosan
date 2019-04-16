@@ -40,6 +40,34 @@ defmodule KakebosanWeb.Accounting.Item do
                                        entry.amount) }
   end
 
+  @doc"""
+  Calculate amount summary by items
+  """
+  def summaries(query, date_from, date_to) do
+    from item in query,
+      join: type in Accounting.Type, on: type.id == item.type_id,
+      preload: [type: type],
+      left_join: entry in Accounting.Entry, on: entry.item_id == item.id,
+      left_join: trx in Accounting.Transaction, on: trx.id == entry.transaction_id,
+      left_join: side in Accounting.Side, on: entry.side_id == side.id,
+      where: trx.date >= ^date_from,
+      where: trx.date <= ^date_to,
+      group_by: [item.id, type.side_id, type.id],
+      order_by: [type.side_id, type.id],
+      select: %{ item: item,
+                 type: type,
+                 debit_amount: fragment("COALESCE(SUM(CASE WHEN ? THEN ? ELSE 0 END), 0)",
+                   side.name == "借方",
+                   entry.amount),
+                 credit_amount: fragment("COALESCE(SUM(CASE WHEN ? THEN ? ELSE 0 END), 0)",
+                   side.name == "貸方",
+                   entry.amount),
+                 amount_grow: fragment("COALESCE(SUM(CASE WHEN ? THEN ? ELSE ? END), 0)",
+                   entry.side_id == type.side_id,
+                   entry.amount,
+                   entry.amount * -1) }
+  end
+
   @doc """
   ユーザー登録時の初期科目セットを登録する
   """

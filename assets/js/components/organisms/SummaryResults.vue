@@ -8,12 +8,12 @@
       <md-table-head>貸方</md-table-head>
       <md-table-head>増減</md-table-head>
     </md-table-row>
-    <md-table-row v-for="itemSummary in value" :key="item.id">
-      <md-table-cell>{{itemSummary.itemName}}</md-table-cell>
-      <md-table-cell>{{itemSummary.typeName}}</md-table-cell>
-      <md-table-cell>{{itemSummary.debitSum}}</md-table-cell>
-      <md-table-cell>{{itemSummary.creditSum}}</md-table-cell>
-      <md-table-cell>{{itemSummary.difference}}</md-table-cell>
+    <md-table-row v-for="itemSummary in value" :key="itemSummary.id">
+      <md-table-cell>{{itemSummary.name}}</md-table-cell>
+      <md-table-cell>{{itemSummary.type.name}}</md-table-cell>
+      <md-table-cell>{{itemSummary.debit_amount}}</md-table-cell>
+      <md-table-cell>{{itemSummary.credit_amount}}</md-table-cell>
+      <md-table-cell>{{itemSummary.amount_grow}}</md-table-cell>
     </md-table-row>
   </md-table>
 </div>

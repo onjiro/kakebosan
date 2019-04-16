@@ -51,14 +51,14 @@ export default {
     },
     reload() {
       Promise.all([
-        axios.get('api/summaries', {
+        axios.get('api/items/summary', {
           params: {
             fromDate: this.period[0].toISOString(),
             toDate: this.period[1].toISOString(),
           }
         }),
       ]).then(([{ data: { data: summaries }}]) => {
-        this.data = summaries;
+        this.summaries = summaries;
       });
     }
   }
