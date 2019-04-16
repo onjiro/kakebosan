@@ -9,7 +9,7 @@
 <script>
 import Vue from 'vue';
 import VueMoment from 'vue-moment';
-import { MdButton, MdField, MdContent, MdCard, MdDatepicker, MdTable, MdSubheader, MdToolbar, MdDialog, MdBottomBar } from 'vue-material/dist/components';
+import { MdButton, MdField, MdContent, MdCard, MdDatepicker, MdTable, MdSubheader, MdToolbar, MdDialog, MdBottomBar, MdMenu, MdList } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 import BottomNav from './components/organisms/BottomNav'
@@ -25,6 +25,8 @@ Vue.use(MdSubheader);
 Vue.use(MdToolbar);
 Vue.use(MdDialog);
 Vue.use(MdBottomBar);
+Vue.use(MdMenu);
+Vue.use(MdList);
 
 export default {
   name: 'app',

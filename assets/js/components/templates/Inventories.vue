@@ -21,9 +21,14 @@
         {{ inventory.amount }}
       </md-table-cell>
       <md-table-cell class="md-table-cell-selection">
-        <md-button class="md-icon-button">
-          <md-icon>more_vert</md-icon>
-        </md-button>
+        <md-menu md-direction="bottom-start">
+          <md-button class="md-icon-button" md-menu-trigger>
+            <md-icon>more_vert</md-icon>
+          </md-button>
+          <md-menu-content>
+            <md-menu-item>棚卸額登録</md-menu-item>
+          </md-menu-content>
+        </md-menu>
       </md-table-cell>
     </md-table-row>
 </md-table>
