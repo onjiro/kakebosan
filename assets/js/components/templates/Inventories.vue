@@ -26,12 +26,16 @@
             <md-icon>more_vert</md-icon>
           </md-button>
           <md-menu-content>
-            <md-menu-item>棚卸額登録</md-menu-item>
+            <md-menu-item><a @click="openInventoryModal(inventory)">棚卸高登録</a></md-menu-item>
           </md-menu-content>
         </md-menu>
       </md-table-cell>
     </md-table-row>
-</md-table>
+
+  </md-table>
+
+  <!-- 棚卸高登録モーダル -->
+  <inventory-modal ref="inventoryModal" @submitted="onInventorySubmitted" />
 </div>
 </template>
 
@@ -42,15 +46,18 @@
 import moment from "moment";
 import axios from "axios";
 import _ from "lodash";
+import InventoryModal from "@/components/templates/InventoryModal";
 
 export default {
   name: 'Inventories',
   components: {
+    InventoryModal
   },
   data: function() {
     return {
       date: moment().startOf('day'),
       inventories: [],
+      inventory: null
     }
   },
   created: function() {
@@ -64,6 +71,20 @@ export default {
         this.inventories = inventories;
       });
     },
+    /**
+     * 棚卸高登録モーダルを開く
+     */
+    openInventoryModal: function(inventory) {
+      console.log("fuga", inventory);
+      this.$refs.inventoryModal.open(inventory);
+    },
+    /**
+     * 棚卸高登録後のコールバック
+     */
+    onInventorySubmitted: function() {
+      this.$refs.inventoryModal.close();
+      this.reload();
+    }
   }
 }
 </script>
