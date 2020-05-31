@@ -20,8 +20,19 @@ defmodule Kakebosan.MixProject do
   def application do
     [
       mod: {Kakebosan.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [
+        :logger,
+        :runtime_tools
+        | extra_applications_ueberauths()
+      ]
     ]
+  end
+
+  defp extra_applications_ueberauths do
+    case Mix.env() do
+      :dev -> [:ueberauth, :ueberauth_google, :ueberauth_identity]
+      _ -> [:ueberauth, :ueberauth_google]
+    end
   end
 
   # Specifies which paths to compile per environment.
@@ -44,7 +55,10 @@ defmodule Kakebosan.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:ueberauth, "~> 0.6"},
+      {:ueberauth_google, "~> 0.9"},
+      {:ueberauth_identity, "~> 0.2", only: :dev}
     ]
   end
 

@@ -1,5 +1,6 @@
 defmodule KakebosanWeb.Router do
   use KakebosanWeb, :router
+  require Ueberauth
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -11,6 +12,16 @@ defmodule KakebosanWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  scope "/auth", KakebosanWeb do
+    pipe_through :browser
+
+    get "/logout", AuthController, :delete
+    post "/logout", AuthController, :delete
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+    post "/:provider/callback", AuthController, :callback
   end
 
   scope "/", KakebosanWeb do

@@ -1,4 +1,7 @@
 <div>
+  <header>
+    <a href="/auth/logout">ログアウト</a>
+  </header>
   <section class="application">
     app.html
   </section>

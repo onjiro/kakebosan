@@ -1,38 +1,32 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>Peace-of-mind from prototype to production</p>
-</section>
+<div class="container">
+  <div class="row">
+    <section class="jumbotron" id="hello">
+      <h1 class="display-4">家計簿さん</h1>
+      <p >複式簿記で家計簿を！</p>
+      <p class="lead">
+        複式簿記なら...<br>
+        現金や電子マネー、クレジットカードなどの支払いと残高をまとめて管理できます。
+      </p>
+      <hr class="my-4">
+      <p>
+        <span class="glyphicon glyphicon-signin">
+          <%= if Mix.env == :dev do %>
+            <a href="/auth/identity" class="btn btn-primary btn-block" >開発者としてログイン</a>
+            <a href="/auth/google" class="btn btn-primary btn-block" >Googleでログイン</a>
+          <% else %>
+            <a href="/auth/google" class="btn btn-primary btn-block" >Googleでログイン</a>
+          <% end %>
+        </span>
+      </p>
+    </section>
+  </div>
+</div>
 
-<section class="row">
-  <article class="column">
-    <h2>Resources</h2>
-    <ul>
-      <li>
-        <a href="https://hexdocs.pm/phoenix/overview.html">Guides &amp; Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix/blob/v1.5/CHANGELOG.md">v1.5 Changelog</a>
-      </li>
-    </ul>
-  </article>
-  <article class="column">
-    <h2>Help</h2>
-    <ul>
-      <li>
-        <a href="https://elixirforum.com/c/phoenix-forum">Forum</a>
-      </li>
-      <li>
-        <a href="https://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on Freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">Twitter @elixirphoenix</a>
-      </li>
-      <li>
-        <a href="https://elixir-slackin.herokuapp.com/">Elixir on Slack</a>
-      </li>
-    </ul>
-  </article>
-</section>
+<footer class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <span class="pull-right">&copy; <a href="https://twitter.com/onjiro_mohyahya" target="_blank">@onjiro_mohyahya</a> 2016</span>
+    </div>
+  </div>
+</footer>
+<br>

@@ -3,7 +3,7 @@ defmodule KakebosanWeb.PageControllerTest do
 
   test "GET / when current_user is not set", %{conn: conn} do
     conn = get(conn, "/")
-    assert html_response(conn, 200) =~ "Welcome to Phoenix!"
+    assert html_response(conn, 200) =~ "Googleでログイン"
   end
 
   test "GET / when current_user is set", %{conn: conn} do
@@ -13,6 +13,6 @@ defmodule KakebosanWeb.PageControllerTest do
       |> put_session(:current_user, 1)
       |> get("/")
 
-    assert html_response(conn, 200) =~ "app.html"
+    assert html_response(conn, 200) =~ "ログアウト"
   end
 end
