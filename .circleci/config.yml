@@ -24,3 +24,5 @@ jobs:
           paths: "deps"
       - run: MIX_ENV=test mix ecto.create
       - run: mix test
+      - store_test_results:
+        path: _build/test/lib/kakebosan
