@@ -58,7 +58,8 @@ defmodule Kakebosan.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:ueberauth, "~> 0.6"},
       {:ueberauth_google, "~> 0.9"},
-      {:ueberauth_identity, "~> 0.2", only: :dev}
+      {:ueberauth_identity, "~> 0.2", only: :dev},
+      {:junit_formatter, "~> 3.1", only: [:test]}
     ]
   end
 
