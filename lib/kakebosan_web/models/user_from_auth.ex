@@ -7,11 +7,25 @@ defmodule UserFromAuth do
   require Jason
 
   alias Ueberauth.Auth
+  alias Kakebosan.User
+
+  @type t :: %__MODULE__{
+          provider: String.t() | atom,
+          uid: String.t(),
+          name: String.t(),
+          avatar: String.t()
+        }
+
+  defstruct provider: nil,
+            uid: nil,
+            name: nil,
+            avatar: nil
 
   def find_or_create(%Auth{provider: :identity} = auth) do
     case validate_pass(auth.credentials) do
       :ok ->
-        {:ok, basic_info(auth)}
+        user = User.find_or_create!(basic_info(auth))
+        {:ok, user}
 
       {:error, reason} ->
         {:error, reason}
@@ -19,7 +33,8 @@ defmodule UserFromAuth do
   end
 
   def find_or_create(%Auth{} = auth) do
-    {:ok, basic_info(auth)}
+    user = User.find_or_create!(basic_info(auth))
+    {:ok, user}
   end
 
   # github does it this way
@@ -36,7 +51,12 @@ defmodule UserFromAuth do
   end
 
   defp basic_info(auth) do
-    %{id: auth.uid, name: name_from_auth(auth), avatar: avatar_from_auth(auth)}
+    %UserFromAuth{
+      provider: auth.provider,
+      uid: auth.uid,
+      name: name_from_auth(auth),
+      avatar: avatar_from_auth(auth)
+    }
   end
 
   defp name_from_auth(auth) do
