@@ -8,6 +8,7 @@ defmodule UserFromAuth do
 
   alias Ueberauth.Auth
   alias Kakebosan.User
+  alias Kakebosan.Accounting
 
   @type t :: %__MODULE__{
           provider: String.t() | atom,
@@ -24,8 +25,7 @@ defmodule UserFromAuth do
   def find_or_create(%Auth{provider: :identity} = auth) do
     case validate_pass(auth.credentials) do
       :ok ->
-        user = User.find_or_create!(basic_info(auth))
-        {:ok, user}
+        find_or_create(basic_info(auth))
 
       {:error, reason} ->
         {:error, reason}
@@ -33,8 +33,18 @@ defmodule UserFromAuth do
   end
 
   def find_or_create(%Auth{} = auth) do
-    user = User.find_or_create!(basic_info(auth))
-    {:ok, user}
+    find_or_create(basic_info(auth))
+  end
+
+  def find_or_create(%UserFromAuth{} = auth) do
+    case User.find_or_create(auth) do
+      {:created, user} ->
+        Accounting.Item.create_from_seeds(user)
+        {:ok, user}
+
+      {_, user} ->
+        {:ok, user}
+    end
   end
 
   # github does it this way

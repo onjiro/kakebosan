@@ -4,6 +4,7 @@ defmodule Kakebosan.User do
   require Logger
 
   alias Kakebosan.User
+  alias Kakebosan.Accounting
 
   schema "users" do
     field :access_token, :string
@@ -14,6 +15,8 @@ defmodule Kakebosan.User do
     field :uid, :string
 
     timestamps()
+
+    has_many :items, Accounting.Item
   end
 
   @doc false
@@ -26,7 +29,7 @@ defmodule Kakebosan.User do
   @doc """
   Ueberauthで認証した際に既存ユーザーが存在したらそれを取得、存在しなければ新規作成する
   """
-  def find_or_create!(%UserFromAuth{} = auth) do
+  def find_or_create(%UserFromAuth{} = auth) do
     Logger.debug("User.find_or_create! #{inspect(auth)}")
 
     provider =
@@ -37,16 +40,20 @@ defmodule Kakebosan.User do
 
     case Kakebosan.Repo.get_by(User, provider: provider, uid: auth.uid) do
       nil ->
-        changeset(%User{}, %{
-          provider: provider,
-          uid: auth.uid,
-          name: auth.name,
-          image_url: auth.avatar
-        })
-        |> Kakebosan.Repo.insert!()
+        user =
+          %User{}
+          |> changeset(%{
+            provider: provider,
+            uid: auth.uid,
+            name: auth.name,
+            image_url: auth.avatar
+          })
+          |> Kakebosan.Repo.insert!()
+
+        {:created, user}
 
       user ->
-        user
+        {:found, user}
     end
   end
 end

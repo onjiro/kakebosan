@@ -2,7 +2,7 @@ defmodule Kakebosan.UserTest do
   use Kakebosan.DataCase
   alias Kakebosan.User
 
-  describe("find_or_create!(%Ueberauth.Auth{}) は") do
+  describe("find_or_create(%Ueberauth.Auth{}) は") do
     defp build(:auth) do
       %UserFromAuth{
         provider: :test,
@@ -13,7 +13,7 @@ defmodule Kakebosan.UserTest do
     end
 
     test "ユーザーが作成済みではない場合、ユーザーを作成して返すこと" do
-      user = User.find_or_create!(build(:auth))
+      {:created, user} = User.find_or_create(build(:auth))
 
       assert user.id != nil
       assert user.provider == "test"
@@ -30,7 +30,7 @@ defmodule Kakebosan.UserTest do
       })
       |> Kakebosan.Repo.insert!()
 
-      user = User.find_or_create!(build(:auth))
+      {:found, user} = User.find_or_create(build(:auth))
 
       assert user.id != nil
       assert user.provider == "test"
