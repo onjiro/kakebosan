@@ -59,7 +59,8 @@ defmodule Kakebosan.MixProject do
       {:ueberauth, "~> 0.6"},
       {:ueberauth_google, "~> 0.9"},
       {:ueberauth_identity, "~> 0.2", only: :dev},
-      {:junit_formatter, "~> 3.1", only: [:test]}
+      {:junit_formatter, "~> 3.1", only: [:test]},
+      {:bodyguard, "~> 2.4"}
     ]
   end
 
