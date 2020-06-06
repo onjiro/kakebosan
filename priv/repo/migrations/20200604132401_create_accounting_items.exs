@@ -11,6 +11,5 @@ defmodule Kakebosan.Repo.Migrations.CreateAccountingItems do
 
       timestamps()
     end
-
   end
 end
