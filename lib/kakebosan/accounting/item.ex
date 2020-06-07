@@ -1,6 +1,7 @@
 defmodule Kakebosan.Accounting.Item do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
 
   alias Kakebosan.User
   alias Kakebosan.Accounting
@@ -15,6 +16,16 @@ defmodule Kakebosan.Accounting.Item do
 
     timestamps()
   end
+
+  @doc """
+  ユーザーがアクセス可能な勘定科目以外をフィルタで除外する
+  @see https://hexdocs.pm/bodyguard/Bodyguard.html#scope/4
+  """
+  def scope(query, %User{id: user_id}, _) do
+    query |> where([query], query.user_id == ^user_id)
+  end
+
+  def scope(_, _, _), do: raise("No user specified")
 
   @doc false
   def changeset(item, attrs) do

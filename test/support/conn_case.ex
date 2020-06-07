@@ -38,6 +38,33 @@ defmodule KakebosanWeb.ConnCase do
       Ecto.Adapters.SQL.Sandbox.mode(Kakebosan.Repo, {:shared, self()})
     end
 
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    conn =
+      Phoenix.ConnTest.build_conn()
+      |> Phoenix.ConnTest.init_test_session(%{})
+
+    {:ok, conn: conn}
+  end
+
+  setup tags do
+    if tags[:current_user] do
+      current_user =
+        case tags[:current_user] do
+          nil ->
+            nil
+
+          current_user ->
+            %Kakebosan.User{}
+            |> Kakebosan.User.changeset(current_user)
+            |> Kakebosan.Repo.insert!()
+        end
+
+      conn =
+        tags[:conn]
+        |> Plug.Conn.put_session(:current_user, current_user)
+
+      {:ok, current_user: current_user, conn: conn}
+    else
+      :ok
+    end
   end
 end

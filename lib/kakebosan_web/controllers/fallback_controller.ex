@@ -14,6 +14,14 @@ defmodule KakebosanWeb.FallbackController do
     |> render("error.json", changeset: changeset)
   end
 
+  # This clause handles errors on unauthorized
+  def call(conn, {:error, :unauthorized}) do
+    conn
+    |> put_status(:not_found)
+    |> put_view(KakebosanWeb.ErrorView)
+    |> render(:"403")
+  end
+
   # This clause is an example of how to handle resources that cannot be found.
   def call(conn, {:error, :not_found}) do
     conn

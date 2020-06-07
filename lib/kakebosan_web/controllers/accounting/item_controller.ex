@@ -7,7 +7,10 @@ defmodule KakebosanWeb.Accounting.ItemController do
   action_fallback KakebosanWeb.FallbackController
 
   def index(conn, _params) do
-    accounting_items = Accounting.list_accounting_items()
+    accounting_items =
+      get_current_user(conn)
+      |> Accounting.list_items()
+
     render(conn, "index.json", accounting_items: accounting_items)
   end
 

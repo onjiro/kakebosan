@@ -4,21 +4,24 @@ defmodule Kakebosan.Accounting do
   """
 
   import Ecto.Query, warn: false
-  alias Kakebosan.Repo
 
+  alias Kakebosan.Repo
   alias Kakebosan.Accounting.Item
+  defdelegate authorize(action, user, params), to: Kakebosan.Accounting.Policy
 
   @doc """
-  Returns the list of accounting_items.
+  Returns the list of items.
 
   ## Examples
 
-      iex> list_accounting_items()
+      iex> list_items()
       [%Item{}, ...]
 
   """
-  def list_accounting_items do
-    Repo.all(Item)
+  def list_items(user) do
+    Item
+    |> Bodyguard.scope(user)
+    |> Repo.all()
   end
 
   @doc """

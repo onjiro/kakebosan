@@ -21,8 +21,9 @@ defmodule KakebosanWeb.ItemControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
+  @tag current_user: %{id: 0, uid: "0", name: "Test User", provider: "dummy provider"}
   describe "index" do
-    test "lists all accounting_items", %{conn: conn} do
+    test "lists all of own accounting_items", %{conn: conn} do
       conn = get(conn, Routes.item_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
     end

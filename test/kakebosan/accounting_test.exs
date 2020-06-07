@@ -19,9 +19,14 @@ defmodule Kakebosan.AccountingTest do
       item
     end
 
+    def build(:user) do
+      %Kakebosan.User{id: 0, name: "test user"}
+    end
+
     test "list_accounting_items/0 returns all accounting_items" do
-      item = item_fixture()
-      assert Accounting.list_accounting_items() == [item]
+      user = build(:user)
+      item = item_fixture(user_id: user.id)
+      assert Accounting.list_items(user) == [item]
     end
 
     test "get_item!/1 returns the item with given id" do
