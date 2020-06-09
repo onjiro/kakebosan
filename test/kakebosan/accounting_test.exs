@@ -6,7 +6,7 @@ defmodule Kakebosan.AccountingTest do
   describe "accounting_items" do
     alias Kakebosan.Accounting.Item
 
-    @valid_attrs %{name: "some name"}
+    @valid_attrs %{name: "some name", type_id: Accounting.Type.asset().id, user_id: 0}
     @update_attrs %{name: "some updated name"}
     @invalid_attrs %{name: nil}
 

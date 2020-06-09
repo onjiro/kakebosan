@@ -31,7 +31,7 @@ defmodule Kakebosan.Accounting.Item do
   def changeset(item, attrs) do
     item
     |> cast(attrs, [:name, :type_id, :description, :selectable, :user_id])
-    |> validate_required([:name])
+    |> validate_required([:name, :type_id, :user_id])
   end
 
   def create_from_seeds(%User{id: user_id}) do

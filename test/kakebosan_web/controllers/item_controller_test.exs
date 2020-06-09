@@ -5,7 +5,8 @@ defmodule KakebosanWeb.ItemControllerTest do
   alias Kakebosan.Accounting.Item
 
   @create_attrs %{
-    name: "some name"
+    name: "some name",
+    type_id: Accounting.Type.asset().id
   }
   @update_attrs %{
     name: "some updated name"
@@ -13,7 +14,7 @@ defmodule KakebosanWeb.ItemControllerTest do
   @invalid_attrs %{name: nil}
 
   def fixture(:item) do
-    {:ok, item} = Accounting.create_item(@create_attrs)
+    {:ok, item} = Accounting.create_item(@create_attrs |> Map.put(:user_id, 0))
     item
   end
 
@@ -21,8 +22,8 @@ defmodule KakebosanWeb.ItemControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
-  @tag current_user: %{id: 0, uid: "0", name: "Test User", provider: "dummy provider"}
   describe "index" do
+    @tag current_user: %{id: 0, uid: "0", name: "Test User", provider: "dummy provider"}
     test "lists all of own accounting_items", %{conn: conn} do
       conn = get(conn, Routes.item_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
@@ -30,6 +31,7 @@ defmodule KakebosanWeb.ItemControllerTest do
   end
 
   describe "create item" do
+    @tag current_user: %{id: 0, uid: "0", name: "Test User", provider: "dummy provider"}
     test "renders item when data is valid", %{conn: conn} do
       conn = post(conn, Routes.item_path(conn, :create), item: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
@@ -42,6 +44,7 @@ defmodule KakebosanWeb.ItemControllerTest do
              } = json_response(conn, 200)["data"]
     end
 
+    @tag current_user: %{id: 0, uid: "0", name: "Test User", provider: "dummy provider"}
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.item_path(conn, :create), item: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
