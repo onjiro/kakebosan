@@ -9,12 +9,13 @@ defmodule KakebosanWeb.ItemControllerTest do
     type_id: Accounting.Type.asset().id
   }
   @update_attrs %{
-    name: "some updated name"
+    name: "some updated name",
+    type_id: Accounting.Type.expense().id
   }
   @invalid_attrs %{name: nil}
 
-  def fixture(:item) do
-    {:ok, item} = Accounting.create_item(@create_attrs |> Map.put(:user_id, 0))
+  def fixture(:item, user_id) do
+    {:ok, item} = Accounting.create_item(@create_attrs |> Map.put(:user_id, user_id))
     item
   end
 
@@ -35,7 +36,6 @@ defmodule KakebosanWeb.ItemControllerTest do
     test "renders item when data is valid", %{conn: conn} do
       conn = post(conn, Routes.item_path(conn, :create), item: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
-
       conn = get(conn, Routes.item_path(conn, :show, id))
 
       assert %{
@@ -52,9 +52,12 @@ defmodule KakebosanWeb.ItemControllerTest do
   end
 
   describe "update item" do
-    setup [:create_item]
-
-    test "renders item when data is valid", %{conn: conn, item: %Item{id: id} = item} do
+    @tag current_user: %{id: 0, uid: "0", name: "Test User", provider: "dummy provider"}
+    test "renders item when data is valid", %{
+      conn: conn,
+      current_user: user
+    } do
+      %Item{id: id} = item = fixture(:item, user.id)
       conn = put(conn, Routes.item_path(conn, :update, item), item: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
@@ -66,16 +69,21 @@ defmodule KakebosanWeb.ItemControllerTest do
              } = json_response(conn, 200)["data"]
     end
 
-    test "renders errors when data is invalid", %{conn: conn, item: item} do
+    @tag current_user: %{id: 0, uid: "0", name: "Test User", provider: "dummy provider"}
+    test "renders errors when data is invalid", %{
+      conn: conn,
+      current_user: user
+    } do
+      item = fixture(:item, user.id)
       conn = put(conn, Routes.item_path(conn, :update, item), item: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
   describe "delete item" do
-    setup [:create_item]
-
-    test "deletes chosen item", %{conn: conn, item: item} do
+    @tag current_user: %{id: 0, uid: "0", name: "Test User", provider: "dummy provider"}
+    test "deletes chosen item", %{conn: conn, current_user: user} do
+      item = fixture(:item, user.id)
       conn = delete(conn, Routes.item_path(conn, :delete, item))
       assert response(conn, 204)
 
@@ -83,10 +91,5 @@ defmodule KakebosanWeb.ItemControllerTest do
         get(conn, Routes.item_path(conn, :show, item))
       end
     end
-  end
-
-  defp create_item(_) do
-    item = fixture(:item)
-    %{item: item}
   end
 end

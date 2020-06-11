@@ -14,10 +14,10 @@ defmodule KakebosanWeb.Accounting.ItemController do
     render(conn, "index.json", accounting_items: accounting_items)
   end
 
-  def create(conn, %{"item" => item_params}) do
+  def create(%{assigns: %{current_user: user}} = conn, %{"item" => item_params}) do
     with {:ok, %Item{} = item} <-
            item_params
-           |> Map.put("user_id", get_current_user(conn).id)
+           |> Map.put("user_id", user.id)
            |> Accounting.create_item() do
       conn
       |> put_status(:created)
@@ -26,23 +26,33 @@ defmodule KakebosanWeb.Accounting.ItemController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    item = Accounting.get_item!(id)
-    render(conn, "show.json", item: item)
-  end
-
-  def update(conn, %{"id" => id, "item" => item_params}) do
+  def show(%{assigns: %{current_user: user}} = conn, %{"id" => id}) do
     item = Accounting.get_item!(id)
 
-    with {:ok, %Item{} = item} <- Accounting.update_item(item, item_params) do
+    with :ok <- Bodyguard.permit(Kakebosan.Accounting, :get_item, user, item) do
       render(conn, "show.json", item: item)
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def update(%{assigns: %{current_user: user}} = conn, %{"id" => id, "item" => item_params}) do
     item = Accounting.get_item!(id)
 
-    with {:ok, %Item{}} <- Accounting.delete_item(item) do
+    with :ok <- Bodyguard.permit(Kakebosan.Accounting, :update_item, user, item),
+         {:ok, %Item{} = item} <-
+           Accounting.update_item(
+             item,
+             item_params
+             |> Map.put("user_id", user.id)
+           ) do
+      render(conn, "show.json", item: item)
+    end
+  end
+
+  def delete(%{assigns: %{current_user: user}} = conn, %{"id" => id}) do
+    item = Accounting.get_item!(id)
+
+    with :ok <- Bodyguard.permit(Kakebosan.Accounting, :delete_item, user, item),
+         {:ok, %Item{}} <- Accounting.delete_item(item) do
       send_resp(conn, :no_content, "")
     end
   end

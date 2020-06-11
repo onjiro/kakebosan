@@ -6,6 +6,8 @@ defmodule Kakebosan.Accounting.Item do
   alias Kakebosan.User
   alias Kakebosan.Accounting
 
+  @behaviour Bodyguard.Schema
+
   schema "accounting_items" do
     belongs_to :user, Kakebosan.User
 

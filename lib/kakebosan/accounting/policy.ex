@@ -1,6 +1,5 @@
 defmodule Kakebosan.Accounting.Policy do
   @behaviour Bodyguard.Policy
-  @behaviour Bodyguard.Schema
 
   alias Kakebosan.User
   alias Kakebosan.Accounting
