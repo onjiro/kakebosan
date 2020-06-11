@@ -6,9 +6,9 @@ defmodule KakebosanWeb.Accounting.ItemController do
 
   action_fallback KakebosanWeb.FallbackController
 
-  def index(conn, _params) do
+  def index(%{assigns: %{current_user: user}} = conn, _params) do
     accounting_items =
-      get_current_user(conn)
+      user
       |> Accounting.list_items()
 
     render(conn, "index.json", accounting_items: accounting_items)

@@ -23,7 +23,6 @@ defmodule KakebosanWeb do
 
       import Plug.Conn
       import KakebosanWeb.Gettext
-      import KakebosanWeb.GetCurrentUser
       alias KakebosanWeb.Router.Helpers, as: Routes
     end
   end
