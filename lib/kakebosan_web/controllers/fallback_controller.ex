@@ -17,7 +17,7 @@ defmodule KakebosanWeb.FallbackController do
   # This clause handles errors on unauthorized
   def call(conn, {:error, :unauthorized}) do
     conn
-    |> put_status(:not_found)
+    |> put_status(:forbidden)
     |> put_view(KakebosanWeb.ErrorView)
     |> render(:"403")
   end
