@@ -15,6 +15,7 @@ defmodule KakebosanWeb.Router do
     plug :accepts, ["json"]
     plug :fetch_session
     plug :assign_current_user
+    plug :authenticate_user_for_api
   end
 
   scope "/auth", KakebosanWeb do
@@ -59,5 +60,20 @@ defmodule KakebosanWeb.Router do
   # will allow you to have access to the current user in your views with `@current_user`.
   defp assign_current_user(conn, _) do
     assign(conn, :current_user, get_session(conn, :current_user))
+  end
+
+  # ユーザーが認証されていない場合エラーを返す
+  defp authenticate_user_for_api(conn, _) do
+    case conn.assigns.current_user do
+      %Kakebosan.User{} ->
+        conn
+
+      nil ->
+        conn
+        |> put_status(:forbidden)
+        |> put_view(KakebosanWeb.ErrorView)
+        |> render(:"403")
+        |> halt()
+    end
   end
 end
