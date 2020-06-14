@@ -66,4 +66,67 @@ defmodule Kakebosan.AccountingTest do
       assert %Ecto.Changeset{} = Accounting.change_item(item)
     end
   end
+
+  describe "accounting_transactions" do
+    alias Kakebosan.Accounting.Transaction
+
+    @valid_attrs %{date: "2010-04-17T14:00:00Z", description: "some description", user_id: 42}
+    @update_attrs %{date: "2011-05-18T15:01:01Z", description: "some updated description", user_id: 43}
+    @invalid_attrs %{date: nil, description: nil, user_id: nil}
+
+    def transaction_fixture(attrs \\ %{}) do
+      {:ok, transaction} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Accounting.create_transaction()
+
+      transaction
+    end
+
+    test "list_accounting_transactions/0 returns all accounting_transactions" do
+      transaction = transaction_fixture()
+      assert Accounting.list_accounting_transactions() == [transaction]
+    end
+
+    test "get_transaction!/1 returns the transaction with given id" do
+      transaction = transaction_fixture()
+      assert Accounting.get_transaction!(transaction.id) == transaction
+    end
+
+    test "create_transaction/1 with valid data creates a transaction" do
+      assert {:ok, %Transaction{} = transaction} = Accounting.create_transaction(@valid_attrs)
+      assert transaction.date == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+      assert transaction.description == "some description"
+      assert transaction.user_id == 42
+    end
+
+    test "create_transaction/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounting.create_transaction(@invalid_attrs)
+    end
+
+    test "update_transaction/2 with valid data updates the transaction" do
+      transaction = transaction_fixture()
+      assert {:ok, %Transaction{} = transaction} = Accounting.update_transaction(transaction, @update_attrs)
+      assert transaction.date == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+      assert transaction.description == "some updated description"
+      assert transaction.user_id == 43
+    end
+
+    test "update_transaction/2 with invalid data returns error changeset" do
+      transaction = transaction_fixture()
+      assert {:error, %Ecto.Changeset{}} = Accounting.update_transaction(transaction, @invalid_attrs)
+      assert transaction == Accounting.get_transaction!(transaction.id)
+    end
+
+    test "delete_transaction/1 deletes the transaction" do
+      transaction = transaction_fixture()
+      assert {:ok, %Transaction{}} = Accounting.delete_transaction(transaction)
+      assert_raise Ecto.NoResultsError, fn -> Accounting.get_transaction!(transaction.id) end
+    end
+
+    test "change_transaction/1 returns a transaction changeset" do
+      transaction = transaction_fixture()
+      assert %Ecto.Changeset{} = Accounting.change_transaction(transaction)
+    end
+  end
 end
