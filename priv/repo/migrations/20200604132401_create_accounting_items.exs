@@ -7,7 +7,7 @@ defmodule Kakebosan.Repo.Migrations.CreateAccountingItems do
       add :type_id, :integer
       add :description, :string
       add :selectable, :boolean, default: false, null: false
-      add :user_id, :integer
+      add :user_id, :integer, null: false
 
       timestamps()
     end
