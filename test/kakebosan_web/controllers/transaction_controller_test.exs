@@ -25,6 +25,7 @@ defmodule KakebosanWeb.TransactionControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
+  @tag current_user: %{id: 0, uid: "0", name: "Test User", provider: "dummy provider"}
   describe "index" do
     test "lists all accounting_transactions", %{conn: conn} do
       conn = get(conn, Routes.transaction_path(conn, :index))
@@ -56,8 +57,13 @@ defmodule KakebosanWeb.TransactionControllerTest do
   describe "update transaction" do
     setup [:create_transaction]
 
-    test "renders transaction when data is valid", %{conn: conn, transaction: %Transaction{id: id} = transaction} do
-      conn = put(conn, Routes.transaction_path(conn, :update, transaction), transaction: @update_attrs)
+    test "renders transaction when data is valid", %{
+      conn: conn,
+      transaction: %Transaction{id: id} = transaction
+    } do
+      conn =
+        put(conn, Routes.transaction_path(conn, :update, transaction), transaction: @update_attrs)
+
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
       conn = get(conn, Routes.transaction_path(conn, :show, id))
@@ -71,7 +77,9 @@ defmodule KakebosanWeb.TransactionControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, transaction: transaction} do
-      conn = put(conn, Routes.transaction_path(conn, :update, transaction), transaction: @invalid_attrs)
+      conn =
+        put(conn, Routes.transaction_path(conn, :update, transaction), transaction: @invalid_attrs)
+
       assert json_response(conn, 422)["errors"] != %{}
     end
   end

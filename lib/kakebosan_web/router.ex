@@ -37,6 +37,7 @@ defmodule KakebosanWeb.Router do
   # Other scopes may use custom stacks.
   scope "/api", KakebosanWeb do
     pipe_through :api
+    resources "/transactions", TransactionController
     resources "/items", Accounting.ItemController
   end
 

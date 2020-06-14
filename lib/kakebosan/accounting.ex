@@ -116,8 +116,10 @@ defmodule Kakebosan.Accounting do
       [%Transaction{}, ...]
 
   """
-  def list_accounting_transactions do
-    Repo.all(Transaction)
+  def list_transactions(user) do
+    Transaction
+    |> Bodyguard.scope(user)
+    |> Repo.all()
   end
 
   @doc """

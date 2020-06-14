@@ -11,9 +11,11 @@ defmodule KakebosanWeb.TransactionView do
   end
 
   def render("transaction.json", %{transaction: transaction}) do
-    %{id: transaction.id,
+    %{
+      id: transaction.id,
       user_id: transaction.user_id,
       date: transaction.date,
-      description: transaction.description}
+      description: transaction.description
+    }
   end
 end

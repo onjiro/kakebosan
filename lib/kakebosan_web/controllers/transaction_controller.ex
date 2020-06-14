@@ -6,9 +6,9 @@ defmodule KakebosanWeb.TransactionController do
 
   action_fallback KakebosanWeb.FallbackController
 
-  def index(conn, _params) do
-    accounting_transactions = Accounting.list_accounting_transactions()
-    render(conn, "index.json", accounting_transactions: accounting_transactions)
+  def index(%{assigns: %{current_user: user}} = conn, _params) do
+    transactions = Accounting.list_transactions(user)
+    render(conn, "index.json", accounting_transactions: transactions)
   end
 
   def create(conn, %{"transaction" => transaction_params}) do
@@ -28,7 +28,8 @@ defmodule KakebosanWeb.TransactionController do
   def update(conn, %{"id" => id, "transaction" => transaction_params}) do
     transaction = Accounting.get_transaction!(id)
 
-    with {:ok, %Transaction{} = transaction} <- Accounting.update_transaction(transaction, transaction_params) do
+    with {:ok, %Transaction{} = transaction} <-
+           Accounting.update_transaction(transaction, transaction_params) do
       render(conn, "show.json", transaction: transaction)
     end
   end
