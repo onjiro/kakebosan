@@ -3,6 +3,10 @@ defmodule Kakebosan.AccountingTest do
 
   alias Kakebosan.Accounting
 
+  def build(:user) do
+    %Kakebosan.User{id: 0, name: "test user"}
+  end
+
   describe "accounting_items" do
     alias Kakebosan.Accounting.Item
 
@@ -19,11 +23,7 @@ defmodule Kakebosan.AccountingTest do
       item
     end
 
-    def build(:user) do
-      %Kakebosan.User{id: 0, name: "test user"}
-    end
-
-    test "list_accounting_items/0 returns all accounting_items" do
+    test "list_items/0 returns all accounting_items" do
       user = build(:user)
       item = item_fixture(user_id: user.id)
       assert Accounting.list_items(user) == [item]
@@ -70,8 +70,16 @@ defmodule Kakebosan.AccountingTest do
   describe "accounting_transactions" do
     alias Kakebosan.Accounting.Transaction
 
-    @valid_attrs %{date: "2010-04-17T14:00:00Z", description: "some description", user_id: 42}
-    @update_attrs %{date: "2011-05-18T15:01:01Z", description: "some updated description", user_id: 43}
+    @valid_attrs %{
+      date: "2010-04-17T14:00:00Z",
+      description: "some description",
+      user_id: 0
+    }
+    @update_attrs %{
+      date: "2011-05-18T15:01:01Z",
+      description: "some updated description",
+      user_id: -1
+    }
     @invalid_attrs %{date: nil, description: nil, user_id: nil}
 
     def transaction_fixture(attrs \\ %{}) do
@@ -83,9 +91,10 @@ defmodule Kakebosan.AccountingTest do
       transaction
     end
 
-    test "list_accounting_transactions/0 returns all accounting_transactions" do
+    test "list_transactions/0 returns all accounting_transactions" do
       transaction = transaction_fixture()
-      assert Accounting.list_accounting_transactions() == [transaction]
+      user = build(:user)
+      assert Accounting.list_transactions(user) == [transaction]
     end
 
     test "get_transaction!/1 returns the transaction with given id" do
@@ -97,7 +106,7 @@ defmodule Kakebosan.AccountingTest do
       assert {:ok, %Transaction{} = transaction} = Accounting.create_transaction(@valid_attrs)
       assert transaction.date == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
       assert transaction.description == "some description"
-      assert transaction.user_id == 42
+      assert transaction.user_id == 0
     end
 
     test "create_transaction/1 with invalid data returns error changeset" do
@@ -106,15 +115,21 @@ defmodule Kakebosan.AccountingTest do
 
     test "update_transaction/2 with valid data updates the transaction" do
       transaction = transaction_fixture()
-      assert {:ok, %Transaction{} = transaction} = Accounting.update_transaction(transaction, @update_attrs)
+
+      assert {:ok, %Transaction{} = transaction} =
+               Accounting.update_transaction(transaction, @update_attrs)
+
       assert transaction.date == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
       assert transaction.description == "some updated description"
-      assert transaction.user_id == 43
+      assert transaction.user_id == -1
     end
 
     test "update_transaction/2 with invalid data returns error changeset" do
       transaction = transaction_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounting.update_transaction(transaction, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Accounting.update_transaction(transaction, @invalid_attrs)
+
       assert transaction == Accounting.get_transaction!(transaction.id)
     end
 
