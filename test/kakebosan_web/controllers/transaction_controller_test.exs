@@ -34,6 +34,7 @@ defmodule KakebosanWeb.TransactionControllerTest do
   end
 
   describe "create transaction" do
+    @tag current_user: %{id: 0, uid: "0", name: "Test User", provider: "dummy provider"}
     test "renders transaction when data is valid", %{conn: conn} do
       conn = post(conn, Routes.transaction_path(conn, :create), transaction: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
@@ -48,6 +49,7 @@ defmodule KakebosanWeb.TransactionControllerTest do
              } = json_response(conn, 200)["data"]
     end
 
+    @tag current_user: %{id: 0, uid: "0", name: "Test User", provider: "dummy provider"}
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.transaction_path(conn, :create), transaction: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
@@ -57,6 +59,7 @@ defmodule KakebosanWeb.TransactionControllerTest do
   describe "update transaction" do
     setup [:create_transaction]
 
+    @tag current_user: %{id: 0, uid: "0", name: "Test User", provider: "dummy provider"}
     test "renders transaction when data is valid", %{
       conn: conn,
       transaction: %Transaction{id: id} = transaction
@@ -76,6 +79,7 @@ defmodule KakebosanWeb.TransactionControllerTest do
              } = json_response(conn, 200)["data"]
     end
 
+    @tag current_user: %{id: 0, uid: "0", name: "Test User", provider: "dummy provider"}
     test "renders errors when data is invalid", %{conn: conn, transaction: transaction} do
       conn =
         put(conn, Routes.transaction_path(conn, :update, transaction), transaction: @invalid_attrs)
@@ -87,6 +91,7 @@ defmodule KakebosanWeb.TransactionControllerTest do
   describe "delete transaction" do
     setup [:create_transaction]
 
+    @tag current_user: %{id: 0, uid: "0", name: "Test User", provider: "dummy provider"}
     test "deletes chosen transaction", %{conn: conn, transaction: transaction} do
       conn = delete(conn, Routes.transaction_path(conn, :delete, transaction))
       assert response(conn, 204)
