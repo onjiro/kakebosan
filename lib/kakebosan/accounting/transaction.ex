@@ -25,6 +25,6 @@ defmodule Kakebosan.Accounting.Transaction do
   def changeset(transaction, attrs) do
     transaction
     |> cast(attrs, [:user_id, :date, :description])
-    |> validate_required([:user_id, :date, :description])
+    |> validate_required([:user_id, :date])
   end
 end
