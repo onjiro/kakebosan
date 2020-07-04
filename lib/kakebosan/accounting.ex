@@ -136,7 +136,7 @@ defmodule Kakebosan.Accounting do
       ** (Ecto.NoResultsError)
 
   """
-  def get_transaction!(id), do: Repo.get!(Transaction, id)
+  def get_transaction!(id), do: Repo.get!(Transaction, id) |> Repo.preload([:entries])
 
   @doc """
   Creates a transaction.

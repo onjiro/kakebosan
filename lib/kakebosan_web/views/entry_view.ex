@@ -11,7 +11,12 @@ defmodule KakebosanWeb.EntryView do
   end
 
   def render("entry.json", %{entry: entry}) do
-    %{id: entry.id,
-      amount: entry.amount}
+    %{
+      id: entry.id,
+      side_id: entry.side_id,
+      user_id: entry.user_id,
+      item_id: entry.item_id,
+      amount: entry.amount
+    }
   end
 end

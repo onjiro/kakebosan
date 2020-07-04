@@ -60,10 +60,10 @@ defmodule KakebosanWeb.TransactionControllerTest do
       conn: conn,
       current_user: %{id: user_id}
     } do
-      item1 =
+      %{id: item1_id} =
         Repo.insert!(%Accounting.Item{user_id: user_id, type_id: Accounting.Type.asset().id})
 
-      item2 =
+      %{id: item2_id} =
         Repo.insert!(%Accounting.Item{user_id: user_id, type_id: Accounting.Type.expense().id})
 
       conn =
@@ -72,8 +72,8 @@ defmodule KakebosanWeb.TransactionControllerTest do
             date: "2010-04-17T14:00:00Z",
             description: "some description",
             entries: [
-              %{item_id: item1.id, amount: 100, side_id: Accounting.Side.debit().id},
-              %{item_id: item2.id, amount: 100, side_id: Accounting.Side.credit().id}
+              %{item_id: item1_id, amount: 100, side_id: Accounting.Side.debit().id},
+              %{item_id: item2_id, amount: 100, side_id: Accounting.Side.credit().id}
             ]
           }
         )
@@ -86,7 +86,11 @@ defmodule KakebosanWeb.TransactionControllerTest do
                "id" => ^id,
                "date" => "2010-04-17T14:00:00Z",
                "description" => "some description",
-               "user_id" => ^user_id
+               "user_id" => ^user_id,
+               "entries" => [
+                 %{"id" => item1_id, "amount" => 100},
+                 %{"id" => item2_id, "amount" => 100}
+               ]
              } = json_response(conn, 200)["data"]
     end
 
