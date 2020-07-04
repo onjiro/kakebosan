@@ -6,11 +6,13 @@ defmodule Kakebosan.Accounting.Transaction do
   @behaviour Bodyguard.Schema
 
   alias Kakebosan.User
+  alias Kakebosan.Accounting
 
   schema "accounting_transactions" do
     field :date, :utc_datetime
     field :description, :string
-    field :user_id, :integer
+    belongs_to :user, User
+    has_many :entries, Accounting.Entry, on_replace: :delete, on_delete: :delete_all
 
     timestamps()
   end
@@ -25,6 +27,7 @@ defmodule Kakebosan.Accounting.Transaction do
   def changeset(transaction, attrs) do
     transaction
     |> cast(attrs, [:user_id, :date, :description])
+    |> cast_assoc(:entries, with: &Accounting.Entry.changeset/2)
     |> validate_required([:user_id, :date])
   end
 end

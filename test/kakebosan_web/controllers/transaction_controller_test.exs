@@ -1,14 +1,10 @@
 defmodule KakebosanWeb.TransactionControllerTest do
   use KakebosanWeb.ConnCase
 
+  alias Kakebosan.Repo
   alias Kakebosan.Accounting
   alias Kakebosan.Accounting.Transaction
 
-  @create_attrs %{
-    date: "2010-04-17T14:00:00Z",
-    description: "some description",
-    user_id: 0
-  }
   @update_attrs %{
     date: "2011-05-18T15:01:01Z",
     description: "some updated description",
@@ -17,8 +13,31 @@ defmodule KakebosanWeb.TransactionControllerTest do
   @invalid_attrs %{date: nil, description: nil, user_id: nil}
 
   def fixture(:transaction, user_id) do
+    item1 = Repo.insert!(%Accounting.Item{user_id: user_id, type_id: Accounting.Type.asset().id})
+
+    item2 =
+      Repo.insert!(%Accounting.Item{user_id: user_id, type_id: Accounting.Type.expense().id})
+
     {:ok, transaction} =
-      @create_attrs |> Map.put(:user_id, user_id) |> Accounting.create_transaction()
+      Accounting.create_transaction(%{
+        user_id: user_id,
+        date: "2010-04-17T14:00:00Z",
+        description: "some description",
+        entries: [
+          %{
+            user_id: user_id,
+            item_id: item1.id,
+            amount: 100,
+            side_id: Accounting.Side.debit().id
+          },
+          %{
+            user_id: user_id,
+            item_id: item2.id,
+            amount: 100,
+            side_id: Accounting.Side.credit().id
+          }
+        ]
+      })
 
     transaction
   end
@@ -37,8 +56,28 @@ defmodule KakebosanWeb.TransactionControllerTest do
 
   describe "create transaction" do
     @tag current_user: %{uid: "0", name: "Test User", provider: "dummy provider"}
-    test "renders transaction when data is valid", %{conn: conn, current_user: %{id: user_id}} do
-      conn = post(conn, Routes.transaction_path(conn, :create), transaction: @create_attrs)
+    test "renders transaction when data is valid", %{
+      conn: conn,
+      current_user: %{id: user_id}
+    } do
+      item1 =
+        Repo.insert!(%Accounting.Item{user_id: user_id, type_id: Accounting.Type.asset().id})
+
+      item2 =
+        Repo.insert!(%Accounting.Item{user_id: user_id, type_id: Accounting.Type.expense().id})
+
+      conn =
+        post(conn, Routes.transaction_path(conn, :create),
+          transaction: %{
+            date: "2010-04-17T14:00:00Z",
+            description: "some description",
+            entries: [
+              %{item_id: item1.id, amount: 100, side_id: Accounting.Side.debit().id},
+              %{item_id: item2.id, amount: 100, side_id: Accounting.Side.credit().id}
+            ]
+          }
+        )
+
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.transaction_path(conn, :show, id))
