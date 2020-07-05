@@ -1,13 +1,13 @@
 defmodule Kakebosan.Accounting.Entry do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Kakebosan.Accounting
 
   schema "accounting_entries" do
     field :side_id, :integer
     field :amount, :integer
-    belongs_to :user, KakebosanWeb.User
-    belongs_to :transaction, KakebosanWeb.Accounting.Transaction
-    belongs_to :item, KakebosanWeb.Accounting.Item
+    belongs_to :transaction, Accounting.Transaction
+    belongs_to :item, Accounting.Item
 
     timestamps()
   end
@@ -15,7 +15,7 @@ defmodule Kakebosan.Accounting.Entry do
   @doc false
   def changeset(entry, attrs) do
     entry
-    |> cast(attrs, [:side_id, :amount, :user_id, :transaction_id, :item_id])
-    |> validate_required([:side_id, :amount, :user_id, :item_id])
+    |> cast(attrs, [:side_id, :amount, :transaction_id, :item_id])
+    |> validate_required([:side_id, :amount, :item_id])
   end
 end

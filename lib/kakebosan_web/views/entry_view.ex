@@ -14,7 +14,6 @@ defmodule KakebosanWeb.EntryView do
     %{
       id: entry.id,
       side_id: entry.side_id,
-      user_id: entry.user_id,
       item_id: entry.item_id,
       amount: entry.amount
     }

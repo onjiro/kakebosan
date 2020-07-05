@@ -25,13 +25,11 @@ defmodule KakebosanWeb.TransactionControllerTest do
         description: "some description",
         entries: [
           %{
-            user_id: user_id,
             item_id: item1.id,
             amount: 100,
             side_id: Accounting.Side.debit().id
           },
           %{
-            user_id: user_id,
             item_id: item2.id,
             amount: 100,
             side_id: Accounting.Side.credit().id

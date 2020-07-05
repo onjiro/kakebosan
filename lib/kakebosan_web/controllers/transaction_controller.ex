@@ -12,14 +12,7 @@ defmodule KakebosanWeb.TransactionController do
   end
 
   def create(%{assigns: %{current_user: user}} = conn, %{"transaction" => transaction_params}) do
-    params =
-      transaction_params
-      |> Map.put("user_id", user.id)
-      |> Map.put(
-        "entries",
-        (transaction_params["entries"] || [])
-        |> Enum.map(fn entry -> Map.put(entry, "user_id", user.id) end)
-      )
+    params = transaction_params |> Map.put("user_id", user.id)
 
     with {:ok, %Transaction{} = transaction} <- Accounting.create_transaction(params) do
       conn
@@ -43,9 +36,7 @@ defmodule KakebosanWeb.TransactionController do
       }) do
     transaction = Accounting.get_transaction!(id)
 
-    params =
-      transaction_params
-      |> Map.put("user_id", user.id)
+    params = transaction_params |> Map.put("user_id", user.id)
 
     with :ok <- Bodyguard.permit(Accounting, :update_transaction, user, transaction),
          {:ok, %Transaction{} = transaction} <-
