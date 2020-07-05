@@ -146,7 +146,7 @@ defmodule Kakebosan.AccountingTest do
       user: user,
       transaction: transaction
     } do
-      assert Accounting.list_transactions(user) == [transaction]
+      assert Accounting.list_transactions(user) |> Repo.preload([:entries]) == [transaction]
     end
 
     test "get_transaction!/1 returns the transaction with given id", %{transaction: transaction} do
