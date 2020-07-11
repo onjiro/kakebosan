@@ -5,11 +5,6 @@ defmodule KakebosanWeb.TransactionControllerTest do
   alias Kakebosan.Accounting
   alias Kakebosan.Accounting.Transaction
 
-  @update_attrs %{
-    date: "2011-05-18T15:01:01Z",
-    description: "some updated description",
-    user_id: 0
-  }
   @invalid_attrs %{date: nil, description: nil, user_id: nil}
 
   def fixture(:transaction, user_id) do
@@ -86,8 +81,8 @@ defmodule KakebosanWeb.TransactionControllerTest do
                "description" => "some description",
                "user_id" => ^user_id,
                "entries" => [
-                 %{"id" => item1_id, "amount" => 100},
-                 %{"id" => item2_id, "amount" => 100}
+                 %{"item_id" => item1_id, "amount" => 100},
+                 %{"item_id" => item2_id, "amount" => 100}
                ]
              } = json_response(conn, 200)["data"]
     end
@@ -107,8 +102,23 @@ defmodule KakebosanWeb.TransactionControllerTest do
     } do
       %Transaction{id: id} = transaction = fixture(:transaction, user_id)
 
+      %{id: item3_id} =
+        Repo.insert!(%Accounting.Item{user_id: user_id, type_id: Accounting.Type.asset().id})
+
+      %{id: item4_id} =
+        Repo.insert!(%Accounting.Item{user_id: user_id, type_id: Accounting.Type.expense().id})
+
       conn =
-        put(conn, Routes.transaction_path(conn, :update, transaction), transaction: @update_attrs)
+        put(conn, Routes.transaction_path(conn, :update, transaction),
+          transaction: %{
+            date: "2011-05-18T15:01:01Z",
+            description: "some updated description",
+            entries: [
+              %{item_id: item3_id, amount: 500, side_id: Accounting.Side.debit().id},
+              %{item_id: item4_id, amount: 500, side_id: Accounting.Side.credit().id}
+            ]
+          }
+        )
 
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
@@ -118,7 +128,11 @@ defmodule KakebosanWeb.TransactionControllerTest do
                "id" => ^id,
                "date" => "2011-05-18T15:01:01Z",
                "description" => "some updated description",
-               "user_id" => ^user_id
+               "user_id" => ^user_id,
+               "entries" => [
+                 %{"item_id" => item3_id, "amount" => 500},
+                 %{"item_id" => item4_id, "amount" => 500}
+               ]
              } = json_response(conn, 200)["data"]
     end
 
