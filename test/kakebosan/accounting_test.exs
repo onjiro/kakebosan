@@ -218,4 +218,65 @@ defmodule Kakebosan.AccountingTest do
       assert %Ecto.Changeset{} = Accounting.change_transaction(transaction)
     end
   end
+
+  describe "accounting_inventories" do
+    alias Kakebosan.Accounting.Inventory
+
+    @valid_attrs %{amount: 42, date: ~N[2010-04-17 14:00:00]}
+    @update_attrs %{amount: 43, date: ~N[2011-05-18 15:01:01]}
+    @invalid_attrs %{amount: nil, date: nil}
+
+    def inventory_fixture(attrs \\ %{}) do
+      {:ok, inventory} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Accounting.create_inventory()
+
+      inventory
+    end
+
+    test "list_accounting_inventories/0 returns all accounting_inventories" do
+      inventory = inventory_fixture()
+      assert Accounting.list_accounting_inventories() == [inventory]
+    end
+
+    test "get_inventory!/1 returns the inventory with given id" do
+      inventory = inventory_fixture()
+      assert Accounting.get_inventory!(inventory.id) == inventory
+    end
+
+    test "create_inventory/1 with valid data creates a inventory" do
+      assert {:ok, %Inventory{} = inventory} = Accounting.create_inventory(@valid_attrs)
+      assert inventory.amount == 42
+      assert inventory.date == ~N[2010-04-17 14:00:00]
+    end
+
+    test "create_inventory/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounting.create_inventory(@invalid_attrs)
+    end
+
+    test "update_inventory/2 with valid data updates the inventory" do
+      inventory = inventory_fixture()
+      assert {:ok, %Inventory{} = inventory} = Accounting.update_inventory(inventory, @update_attrs)
+      assert inventory.amount == 43
+      assert inventory.date == ~N[2011-05-18 15:01:01]
+    end
+
+    test "update_inventory/2 with invalid data returns error changeset" do
+      inventory = inventory_fixture()
+      assert {:error, %Ecto.Changeset{}} = Accounting.update_inventory(inventory, @invalid_attrs)
+      assert inventory == Accounting.get_inventory!(inventory.id)
+    end
+
+    test "delete_inventory/1 deletes the inventory" do
+      inventory = inventory_fixture()
+      assert {:ok, %Inventory{}} = Accounting.delete_inventory(inventory)
+      assert_raise Ecto.NoResultsError, fn -> Accounting.get_inventory!(inventory.id) end
+    end
+
+    test "change_inventory/1 returns a inventory changeset" do
+      inventory = inventory_fixture()
+      assert %Ecto.Changeset{} = Accounting.change_inventory(inventory)
+    end
+  end
 end

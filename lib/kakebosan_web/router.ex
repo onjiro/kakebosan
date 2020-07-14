@@ -39,6 +39,7 @@ defmodule KakebosanWeb.Router do
     pipe_through :api
     resources "/transactions", TransactionController
     resources "/items", Accounting.ItemController
+    resources "/inventories", Accounting.InventoryController
   end
 
   # Enables LiveDashboard only for development
