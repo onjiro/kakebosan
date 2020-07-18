@@ -226,6 +226,43 @@ defmodule Kakebosan.AccountingTest do
     @update_attrs %{amount: 43, date: ~N[2011-05-18 15:01:01]}
     @invalid_attrs %{amount: nil, date: nil}
 
+    setup do
+      user = Repo.insert!(%Kakebosan.User{name: "test user"})
+
+      item1 =
+        Repo.insert!(%Accounting.Item{user_id: user.id, type_id: Accounting.Type.asset().id})
+
+      item2 =
+        Repo.insert!(%Accounting.Item{user_id: user.id, type_id: Accounting.Type.expense().id})
+
+      transaction =
+        Repo.insert!(%Accounting.Transaction{
+          user_id: user.id,
+          date: ~U[2010-04-17 14:00:00Z],
+          description: "some description",
+          entries: [
+            %{
+              item_id: item1.id,
+              side_id: Accounting.Side.debit().id,
+              amount: 100
+            },
+            %{
+              item_id: item2.id,
+              side_id: Accounting.Side.credit().id,
+              amount: 100
+            }
+          ]
+        })
+
+      {:ok,
+       %{
+         user: user,
+         transaction: transaction,
+         item1: item1,
+         item2: item2
+       }}
+    end
+
     def inventory_fixture(attrs \\ %{}) do
       {:ok, inventory} =
         attrs
@@ -245,10 +282,21 @@ defmodule Kakebosan.AccountingTest do
       assert Accounting.get_inventory!(inventory.id) == inventory
     end
 
-    test "create_inventory/1 with valid data creates a inventory" do
-      assert {:ok, %Inventory{} = inventory} = Accounting.create_inventory(@valid_attrs)
-      assert inventory.amount == 42
-      assert inventory.date == ~N[2010-04-17 14:00:00]
+    test "create_inventory/1 with valid data creates a inventory", %{
+      user: %{id: user_id},
+      item1: %{id: item_id}
+    } do
+      assert {:ok, %Inventory{} = inventory} =
+               Accounting.create_inventory(%{
+                 user_id: user_id,
+                 item_id: item_id,
+                 date: ~U[2020-07-18 23:00:00Z],
+                 amount: 1000
+               })
+
+      assert inventory.item_id == item_id
+      assert inventory.amount == 1000
+      assert inventory.date == ~U[2020-07-18 23:00:00Z]
     end
 
     test "create_inventory/1 with invalid data returns error changeset" do
@@ -257,7 +305,10 @@ defmodule Kakebosan.AccountingTest do
 
     test "update_inventory/2 with valid data updates the inventory" do
       inventory = inventory_fixture()
-      assert {:ok, %Inventory{} = inventory} = Accounting.update_inventory(inventory, @update_attrs)
+
+      assert {:ok, %Inventory{} = inventory} =
+               Accounting.update_inventory(inventory, @update_attrs)
+
       assert inventory.amount == 43
       assert inventory.date == ~N[2011-05-18 15:01:01]
     end

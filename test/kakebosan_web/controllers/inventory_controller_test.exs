@@ -53,7 +53,10 @@ defmodule KakebosanWeb.InventoryControllerTest do
   describe "update inventory" do
     setup [:create_inventory]
 
-    test "renders inventory when data is valid", %{conn: conn, inventory: %Inventory{id: id} = inventory} do
+    test "renders inventory when data is valid", %{
+      conn: conn,
+      inventory: %Inventory{id: id} = inventory
+    } do
       conn = put(conn, Routes.inventory_path(conn, :update, inventory), inventory: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 

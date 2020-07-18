@@ -73,6 +73,19 @@ defmodule Kakebosan.Accounting.Policy do
     end
   end
 
+  # 作成するユーザーが科目の所有者ならOK
+  def authorize(:create_inventory, %{id: user_id}, %{item_id: item_id}) do
+    is_item_owner =
+      Accounting.Item
+      |> where([i], i.id == ^item_id and i.user_id == ^user_id)
+      |> Repo.exists?()
+
+    cond do
+      !is_item_owner -> :error
+      true -> :ok
+    end
+  end
+
   # Catch-all: そのほかはすべて許可しない
   def authorize(action, user, params) do
     Logger.debug(
